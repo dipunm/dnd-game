@@ -8,8 +8,8 @@
 
 .Chatbox-contents {
     padding: 0 10px;
-    flex-grow: 1;
     overflow: auto;
+    flex: 1 1 1px;
 }
 
 .Chatbox-bar {
@@ -25,7 +25,7 @@
     border: 1px solid white;
     border-radius: 50%;
     color: white;
-    font-weight: strong;
+    font-weight: bold;
     width: 2em;
     height: 2em;
     margin-left: 0.5em;
@@ -36,6 +36,7 @@
     min-width: 240px;
     height: 2em;
     flex-grow: 1;
+    padding: 5px 0;
 }
 
 .Chatbox-entry {

@@ -1,0 +1,80 @@
+.Chatbox {
+    display: flex;
+    flex-direction: column;
+    border-left: 2px dashed gray;
+    background: rgba(255,255,255, 0.2);
+    max-height: 100vh;
+}
+
+.Chatbox-contents {
+    padding: 0 10px;
+    flex-grow: 1;
+    overflow: auto;
+}
+
+.Chatbox-bar {
+    padding: 10px;
+    flex-shrink: 1;
+    background: rgba(65, 105, 225, 0.4);
+    display: flex;
+    border-top: 1px solid lightgray ;
+}
+
+.Chatbox-submit {
+    background: darkslategrey;
+    border: 1px solid white;
+    border-radius: 50%;
+    color: white;
+    font-weight: strong;
+    width: 2em;
+    height: 2em;
+    margin-left: 0.5em;
+    cursor: pointer;
+}
+
+.Chatbox-input {
+    min-width: 240px;
+    height: 2em;
+    flex-grow: 1;
+}
+
+.Chatbox-entry {
+    text-align: left;
+}
+
+.Chatbox-entry p {
+    position: relative;
+}
+
+.Chatbox-entry p.bot {
+    font-family: monospace;
+}
+
+.Chatbox-entry .tag {
+    display: inline-block;
+    font-size: 0.7em;
+    line-height: 1.2em;
+    border: 1px solid white;
+    background: seashell;
+    border-radius: 5px;
+    color: black;
+    font-weight: bold;
+    padding: 1px 4px;
+    margin-right: 0.7em;
+}
+
+.Chatbox-entry p {
+    padding: 5px;
+}
+
+.Chatbox-entry .Img {
+    border-radius: 50%;
+    width: 1em;
+    height: 1em;
+    line-height: 1em;
+    padding: 10px;
+    background: saddlebrown;
+    float:left;
+    margin-right: 0.5em;
+    text-align: center;
+}

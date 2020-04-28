@@ -9,9 +9,9 @@ function createHandle(handlers, handler) {
 export default class Observable {
     constructor(subject) {
         this.subject = subject;
+        this.handlers = [];
     }
 
-    handlers = [];
     subscribe(handler) {
         this.handlers.push(handler);
         handler(this.subject);

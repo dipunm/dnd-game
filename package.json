@@ -21,7 +21,7 @@
   },
   "scripts": {
     "start:react": "react-scripts start",
-    "start:node": "nodemon app.js",
+    "start:node": "nodemon server.js",
     "start": "concurrently --kill-others-on-fail npm:start:*",
     "broadcast": "bin/ngrok http 8888",
     "build": "react-scripts build",

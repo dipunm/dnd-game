@@ -20,7 +20,7 @@ class UserObservable extends Observable {
             this.user = { username };
             localStorage.setItem('username', username);
             localStorage.removeItem('displayName');
-            this.emit(this.user);
+            this.emit({...this.user});
         }
     }
 

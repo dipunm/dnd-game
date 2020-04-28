@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import TextareaAutoSize from 'react-textarea-autosize';
 import './Chat.css';
+import ChatObservable from '../../observables/ChatObservable';
+import { useObservable } from 'react-use';
 
 const ENTER = 13;
 
-export default function () {
+export default function Chat() {
+    const messages = useObservable(ChatObservable, []) || [];
     const [autoScroll, setAutoScroll] = useState(true);
     const contentsRef = useRef(null);
 
@@ -33,7 +36,7 @@ export default function () {
     const doSubmit = (text) => {
         const trimmed = text.trim();
         if (trimmed) {
-            console.log(trimmed);
+            ChatObservable.sendMessage(text);
             return true;
         }
 
@@ -49,150 +52,15 @@ export default function () {
                     <div style={{clear: "both"}} />
                 </div>
                 <div className="Chatbox-entry">
-                    <div className="Img">A</div>
-                    <p>Hello world</p>
-                    <div style={{clear: "both"}} />
-                </div>
-                <div className="Chatbox-entry">
                     <p className="bot"><strong>Summer of Beth</strong> rolled a 2d8+9 and got 21</p>
                 </div>
-                <div className="Chatbox-entry">
-                    <p className="bot"><strong>Summer of Beth</strong> rolled a 2d8+9 and got 21</p>
-                </div>
-                <div className="Chatbox-entry">
-                    <div className="Img">A</div>
-                    <p>Hello world</p>
-                    <div style={{clear: "both"}} />
-                </div>
-                <div className="Chatbox-entry">
-                    <p className="bot"><strong>Summer of Beth</strong> rolled a 2d8+9 and got 21</p>
-                </div>
-
-                <div className="Chatbox-entry">
-                    <div className="Img">A</div>
-                    <p>Hello world</p>
-                    <div style={{clear: "both"}} />
-                </div>
-                <div className="Chatbox-entry">
-                    <div className="Img">A</div>
-                    <p>Hello world. This is a message that I wrote. What's up?</p>
-                    <div style={{clear: "both"}} />
-                </div>
-                <div className="Chatbox-entry">
-                    <div className="Img">A</div>
-                    <p>Hello world</p>
-                    <div style={{clear: "both"}} />
-                </div>
-                <div className="Chatbox-entry">
-                    <p className="bot"><strong>Summer of Beth</strong> rolled a 2d8+9 and got 21</p>
-                </div>
-                <div className="Chatbox-entry">
-                    <p className="bot"><strong>Summer of Beth</strong> rolled a 2d8+9 and got 21</p>
-                </div>
-                <div className="Chatbox-entry">
-                    <div className="Img">A</div>
-                    <p>Hello world</p>
-                    <div style={{clear: "both"}} />
-                </div>
-                <div className="Chatbox-entry">
-                    <p className="bot"><strong>Summer of Beth</strong> rolled a 2d8+9 and got 21</p>
-                </div>
-
-                <div className="Chatbox-entry">
-                    <div className="Img">A</div>
-                    <p>Hello world</p>
-                    <div style={{clear: "both"}} />
-                </div>
-                <div className="Chatbox-entry">
-                    <div className="Img">A</div>
-                    <p>Hello world. This is a message that I wrote. What's up?</p>
-                    <div style={{clear: "both"}} />
-                </div>
-                <div className="Chatbox-entry">
-                    <div className="Img">A</div>
-                    <p>Hello world</p>
-                    <div style={{clear: "both"}} />
-                </div>
-                <div className="Chatbox-entry">
-                    <p className="bot"><strong>Summer of Beth</strong> rolled a 2d8+9 and got 21</p>
-                </div>
-                <div className="Chatbox-entry">
-                    <p className="bot"><strong>Summer of Beth</strong> rolled a 2d8+9 and got 21</p>
-                </div>
-                <div className="Chatbox-entry">
-                    <div className="Img">A</div>
-                    <p>Hello world</p>
-                    <div style={{clear: "both"}} />
-                </div>
-                <div className="Chatbox-entry">
-                    <p className="bot"><strong>Summer of Beth</strong> rolled a 2d8+9 and got 21</p>
-                </div>
-
-                <div className="Chatbox-entry">
-                    <div className="Img">A</div>
-                    <p>Hello world</p>
-                    <div style={{clear: "both"}} />
-                </div>
-                <div className="Chatbox-entry">
-                    <div className="Img">A</div>
-                    <p>Hello world. This is a message that I wrote. What's up?</p>
-                    <div style={{clear: "both"}} />
-                </div>
-                <div className="Chatbox-entry">
-                    <div className="Img">A</div>
-                    <p>Hello world</p>
-                    <div style={{clear: "both"}} />
-                </div>
-                <div className="Chatbox-entry">
-                    <p className="bot"><strong>Summer of Beth</strong> rolled a 2d8+9 and got 21</p>
-                </div>
-                <div className="Chatbox-entry">
-                    <p className="bot"><strong>Summer of Beth</strong> rolled a 2d8+9 and got 21</p>
-                </div>
-                <div className="Chatbox-entry">
-                    <div className="Img">A</div>
-                    <p>Hello world</p>
-                    <div style={{clear: "both"}} />
-                </div>
-                <div className="Chatbox-entry">
-                    <p className="bot"><strong>Summer of Beth</strong> rolled a 2d8+9 and got 21</p>
-                </div>
-
-                <div className="Chatbox-entry">
-                    <div className="Img">A</div>
-                    <p>Hello world</p>
-                    <div style={{clear: "both"}} />
-                </div>
-                <div className="Chatbox-entry">
-                    <div className="Img">A</div>
-                    <p>Hello world. This is a message that I wrote. What's up?</p>
-                    <div style={{clear: "both"}} />
-                </div>
-                <div className="Chatbox-entry">
-                    <div className="Img">A</div>
-                    <p>Hello world</p>
-                    <div style={{clear: "both"}} />
-                </div>
-                <div className="Chatbox-entry">
-                    <p className="bot"><strong>Summer of Beth</strong> rolled a 2d8+9 and got 21</p>
-                </div>
-                <div className="Chatbox-entry">
-                    <p className="bot"><strong>Summer of Beth</strong> rolled a 2d8+9 and got 21</p>
-                </div>
-                <div className="Chatbox-entry">
-                    <div className="Img">A</div>
-                    <p>Hello world</p>
-                    <div style={{clear: "both"}} />
-                </div>
-                <div className="Chatbox-entry">
-                    <p className="bot"><strong>Summer of Beth</strong> rolled a 2d8+9 and got 21</p>
-                </div>
-
-                <div className="Chatbox-entry">
-                    <div className="Img">A</div>
-                    <p>Hello world</p>
-                    <div style={{clear: "both"}} />
-                </div>
+                { messages.map(({handle, message}) => (
+                    <div className="Chatbox-entry">
+                        <div className="Img">{handle[0].toUpperCase()}</div>
+                        <p>{message}</p>
+                        <div style={{clear: "both"}} />
+                    </div>
+                )) }
             </div>
             <ChatboxBar onSubmit={text => doSubmit(text)} />
         </div>

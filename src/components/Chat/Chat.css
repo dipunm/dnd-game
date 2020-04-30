@@ -41,14 +41,58 @@
 
 .Chatbox-entry {
     text-align: left;
+    padding: 3px 10px;
+}
+
+.Chatbox-entry.bubble{
+    border: #333 1px solid;
+    border-radius: 10px;
+    background-color: rgba(61, 173, 248, 0.2);
+    margin: 10px 0;
+    padding: 8px 10px 5px 10px;
+}
+
+.Chatbox-entry.bubble:not(.self):nth-of-type(1) h2{
+    color: red;
+}
+.Chatbox-entry.bubble:not(.self):nth-of-type(6) h2{
+    color: red;
+}
+.Chatbox-entry.bubble:not(.self):nth-of-type(7) h2{
+    color: red;
+}
+.Chatbox-entry.bubble:not(.self):nth-of-type(8) h2{
+    color: red;
+}
+.Chatbox-entry.bubble:not(.self):nth-of-type(9) h2{
+    color: red;
+}
+.Chatbox-entry.bubble:nth-of-type(10) h2{
+    color: red;
+}
+
+.Chatbox-entry.self{
+    background-color: rgba(23, 109, 66, 0.432);
+}
+
+.Chatbox-entry-handle{
+    font-size: 0.9rem;
+   
+     margin: 0;
 }
 
 .Chatbox-entry p {
     position: relative;
+    font-size: 0.9rem;
+    margin: 0;
+    padding: 5px 0;
+    
+
 }
 
 .Chatbox-entry p.bot {
-    font-family: monospace;
+    font-family: 'lucida console', monospace;
+    font-size: 0.8rem;
 }
 
 .Chatbox-entry .tag {
@@ -62,10 +106,6 @@
     font-weight: bold;
     padding: 1px 4px;
     margin-right: 0.7em;
-}
-
-.Chatbox-entry p {
-    padding: 5px;
 }
 
 .Chatbox-entry .Img {

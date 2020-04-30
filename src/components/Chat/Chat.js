@@ -46,17 +46,53 @@ export default function Chat() {
     return (
         <div className="Chatbox">
             <div ref={contentsRef} onScroll={updateAutoScroll} className="Chatbox-contents">
-                <div className="Chatbox-entry">
-                    <div className="Img">A</div>
+                <div className="Chatbox-entry bubble">
+                    <h2 className="Chatbox-entry-handle">Nisha</h2>
                     <p>Hello world. This is a message that I wrote. What's up?</p>
                     <div style={{clear: "both"}} />
                 </div>
                 <div className="Chatbox-entry">
                     <p className="bot"><strong>Summer of Beth</strong> rolled a 2d8+9 and got 21</p>
                 </div>
-                { messages.map(({handle, message}) => (
-                    <div className="Chatbox-entry">
-                        <div className="Img">{handle[0].toUpperCase()}</div>
+                <div className="Chatbox-entry">
+                    <p className="bot"><strong>Summer of Beth</strong> rolled a 2d8+9 and got 21</p>
+                </div>
+                <div className="Chatbox-entry">
+                    <p className="bot"><strong>Summer of Beth</strong> rolled a 2d8+9 and got 21</p>
+                </div>
+                <div className="Chatbox-entry bubble self">
+                    <h2 className="Chatbox-entry-handle">Nisha</h2>
+                    <p>Hello world. This is a message that I wrote. What's up?</p>
+                    <div style={{clear: "both"}} />
+                </div>
+                <div className="Chatbox-entry bubble">
+                    <h2 className="Chatbox-entry-handle">Nisha</h2>
+                    <p>Hello world. This is a message that I wrote. What's up?</p>
+                    <div style={{clear: "both"}} />
+                </div>
+                <div className="Chatbox-entry bubble">
+                    <h2 className="Chatbox-entry-handle">Nisha</h2>
+                    <p>Hello world. This is a message that I wrote. What's up?</p>
+                    <div style={{clear: "both"}} />
+                </div>
+                <div className="Chatbox-entry bubble">
+                    <h2 className="Chatbox-entry-handle">Nisha</h2>
+                    <p>Hello world. This is a message that I wrote. What's up?</p>
+                    <div style={{clear: "both"}} />
+                </div>
+                <div className="Chatbox-entry bubble">
+                    <h2 className="Chatbox-entry-handle">Nisha</h2>
+                    <p>Hello world. This is a message that I wrote. What's up?</p>
+                    <div style={{clear: "both"}} />
+                </div>
+                <div className="Chatbox-entry bubble">
+                    <h2 className="Chatbox-entry-handle">Nisha</h2>
+                    <p>Hello world. This is a message that I wrote. What's up?</p>
+                    <div style={{clear: "both"}} />
+                </div>
+                { messages.map(( {handle, message} ) => (
+                    <div className="Chatbox-entry bubble">
+                        <h2 className="Chatbox-entry-handle">{handle}</h2>
                         <p>{message}</p>
                         <div style={{clear: "both"}} />
                     </div>

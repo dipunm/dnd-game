@@ -1,7 +1,9 @@
 body {
   background-color: #282c34;
   color: white;
+  font-size:62.5%;
 }
+
 .App {
   text-align: center;
   display: flex;

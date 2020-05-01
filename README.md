@@ -1,5 +1,18 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Initial Setup
+
+For initial setup you need to have installed:
+* node
+* yarn
+* Whatever IDE you like to code in
+
+Once these are installed:
+* clone the git repository
+* navigate to this directory
+* run the command 'yarn' - this will download all the relevant dependenices required
+* then you can continue working on the project
+
 ## Available Scripts
 
 In the project directory, you can run:

@@ -1,0 +1,72 @@
+/***
+  // The gray background
+  const backdropStyle = {
+    position: 'fixed',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(0,0,0,0.8)',
+    padding: 50,
+    zIndex: 10,
+  };
+
+  // The modal "window"
+  const modalStyle = {
+    position: 'absolute',
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    // maxWidth: 500,
+    minHeight: 300,
+    width: '90vw',
+    height: 'calc(90vh - 10px - 1em)',
+    margin: '0 auto',
+    zIndex: 10,
+  };
+  */
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    /* padding: 50px; */
+    z-index: 10;
+    display: flex;
+    flex-flow: row;
+}
+
+.modal-modal {
+    align-self: center;
+    align-content: center;
+    /* position: absolute; */
+    background-color: white;
+    border-radius: 5px;
+    margin: 0 auto;
+    z-index: 10;
+    max-width: 1024px;
+    max-height: 1024px;
+}
+
+@media screen and (orientation:landscape) {
+    .modal-modal{
+        height: 90vh;
+        width: 90vh;
+    }
+}
+@media screen and (orientation:portrait) {
+    .modal-modal{
+        height: 90vw;
+        width: 90vw;
+    }
+}
+
+@media screen and (max-width: 550px), screen and (max-height: 550px) {
+    .modal-modal{
+        height: 100vh;
+        width: 100vw;
+        border: none;
+    }
+}

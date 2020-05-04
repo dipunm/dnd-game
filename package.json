@@ -12,16 +12,18 @@
     "nodemon": "^2.0.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-modal": "^3.11.2",
     "react-scripts": "3.4.1",
     "react-textarea-autosize": "^7.1.2",
     "react-use": "^14.2.0",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",
-    "three": "^0.115.0"
+    "three": "^0.115.0",
+    "three-to-cannon": "^2.1.0"
   },
   "scripts": {
     "start:react": "react-scripts start",
-    "start:node": "nodemon server.js",
+    "start:node": "node bin/start-dev-server",
     "start": "concurrently --kill-others-on-fail npm:start:*",
     "broadcast": "bin/ngrok http 8888",
     "build": "react-scripts build",

@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 // import D20 from '../D20/D20';
 import Chat from '../Chat/Chat';
+import Modal from '../Modal/Modal';
 import { useObservable } from 'react-use';
 import UserObservable from '../../observables/UserObservable';
+import DiceBoard from '../DiceBoard/DiceBoard';
 
 export default () => {
     const { username, displayName } = useObservable(UserObservable) || {}
@@ -18,10 +20,13 @@ export default () => {
                             value={displayName} 
                             onChange={e => UserObservable.setDisplayName(e.target.value)} 
                             placeholder="Character Name" />
+                        
                     </h1>
                 </header>
                 <section className="App-game">
-                    {/* <D20 /> */}
+                    <Modal show={true}>
+                        <DiceBoard />
+                    </Modal>
                 </section>
             </main>
             <section className="App-aside">

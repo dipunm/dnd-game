@@ -28,7 +28,7 @@ const GRAVITY = 9.8;
 
 export const createWorld = (width, height) => {
     const world = new World();
-    world.gravity.set(0, 0, -GRAVITY * 500);
+    world.gravity.set(0, 0, -GRAVITY * 700);
     world.broadphase = new NaiveBroadphase();
     world.solver.iterations = 50;
 

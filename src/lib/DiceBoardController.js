@@ -1,35 +1,26 @@
-import { Body, Vec3 } from 'cannon';
 import { createWorld } from './Diceboard/world';
 import { createRenderer, updateRenderer } from './Diceboard/renderer';
 import { buildScene } from './Diceboard/scene';
 import { createCamera } from './Diceboard/camera';
-import { create_d6, create_d4 } from './Diceboard/dice';
+import * as creators from './Diceboard/dice';
+import { Vector3, Quaternion } from 'three';
 
 
 export class DiceBoardController {
     constructor(container) {
+        this.stillCounter = 0;
         this.container = container;
         this.width = this.container.clientWidth;
         this.height = this.container.clientHeight;
         this.aspect = this.width / this.height;        
 
         this.renderer = createRenderer();
-        const dice = [
-            // create_d4(45, [ 50, -50, 200 ]),
-            create_d6(45, [ 0, -100, 200 ]),
-            create_d6(45, [ -50, 50, 200 ]),
-            // create_d4(45, [0, 0, 400])
-        ];
+        this.dice = [];
 
         // Creates the physical world for physics engine.
         this.world = createWorld(this.width, this.height);
         // creates equivalent scene for rendering.
         this.scene = buildScene();
-
-        dice.forEach(die => {
-            this.world.addBody(die.body);
-            this.scene.add(die.mesh);
-        })
 
         this.camera = createCamera(this.aspect);
         updateRenderer(this.renderer, {
@@ -42,18 +33,29 @@ export class DiceBoardController {
         this.container.appendChild(this.renderer.domElement);
         window.addEventListener('resize', () => this.resize());
 
+        this.startAnimation();
+    }
+
+    startAnimation() {
+        console.log('starting animation');
+        if (this.animation) {
+            return;
+        }
+
         let lastTime;
         const fixedTimeStep = 1.0 / 60.0;
         const animate = (time) => {
-            requestAnimationFrame(animate);
+            this.animation = requestAnimationFrame(animate);
 
             if (lastTime !== undefined) {
                 var dt = (time - lastTime) / 1000;
+                console.log('tick');
                 this.world.step(fixedTimeStep, dt, 3);
+                this.detectResults();
             }
 
             lastTime = time;
-            dice.forEach(die => {
+            this.dice.forEach(die => {
                 die.mesh.position.copy(die.body.position);
                 die.mesh.quaternion.copy(die.body.quaternion);
             });
@@ -65,49 +67,88 @@ export class DiceBoardController {
                 camera: this.camera
             });
         };
-        let animation = requestAnimationFrame(animate)
+        this.animation = requestAnimationFrame(animate)
     }
 
-    roll(time) {
-//        setTimeout(() => requestAnimationFrame((t) => this.roll(t)), 100);
-        // requestAnimationFrame((t) => this.roll(t))
+    roll(dice) {
+        setTimeout(() => {
+            if (this.dice.length) {
+                this.dice.forEach(die => {
+                    this.world.remove(die.body);
+                    this.scene.remove(die.mesh);
+                });
+                this.dice.splice(0);
+            }
+            console.log(dice);
+            const newDice = dice.map(die_name => creators[`create_${die_name}`]());
+            this.dice.push(...newDice);
+            newDice.forEach(die => {
+                this.world.addBody(die.body);
+                this.scene.add(die.mesh);
+            });
+            this.startAnimation();
+        }, 100)
 
-        if(this.lastTime !== undefined){
-            this.world.step(1/60, time);
+        if (this.lastPromise) {
+            this.lastPromise.reject();
         }
-        this.lastTime = time;
+        return new Promise((resolve, reject) => this.lastPromise = { resolve, reject });
+    }
 
-        for (var i in this.scene.children) {
-            var interact = this.scene.children[i];
-            if (interact.body != undefined) {
-                interact.position.copy(interact.body.position);
-                interact.quaternion.copy(interact.body.quaternion);
+    detectResults() {
+        const diff = this.dice.reduce((agg, die) => {
+            const bodyPos = new Vector3(die.body.position.x, die.body.position.y, die.body.position.z);
+            const bodyQuat = new Quaternion(die.body.quaternion.x, die.body.quaternion.y, die.body.quaternion.z, die.body.quaternion.w);
+            return (
+                agg + 
+                Math.abs(die.mesh.position.distanceTo(bodyPos)) + 
+                Math.abs(die.mesh.quaternion.angleTo(bodyQuat))
+            );
+        }, 0);
+
+        console.log('diff', diff);
+        if (diff <= 1) {
+            this.stillCounter++;
+        } else {
+            this.stillCounter = 0;
+        }
+
+        const n30_FRAMES = 30;
+        if (this.stillCounter > n30_FRAMES) {
+            console.log('stopping animation');
+            cancelAnimationFrame(this.animation);
+            this.animation = null;
+            if (this.lastPromise) {
+                const values = this.readDice();
+                if (!values.length) return;
+                this.lastPromise.resolve(values);
             }
         }
-
-        // console.log('ITEMS', this.world.world.bodies.length)
-        // const body = this.scene.children.filter(c => c.body).map(c => c.body)[0];
-        // const output = {
-        //     x: body.position.x, 
-        //     y: body.position.y,
-        //     z: body.position.z
-        // };
-        // if (window.output) {
-        //     const diffs = {
-        //         x: Math.abs(output.x - window.output.x),
-        //         y: Math.abs(output.y - window.output.y),
-        //         z: Math.abs(output.z - window.output.z),
-        //     };
-        //     const diff = diffs.x + diffs.y + diffs.z
-        //     if (window.stop !== true)
-        //         console.log('DIFF', diff);
-        // }
-        // window.output = output;
-
-        this.renderer.render(this.scene, this.camera);
     }
 
+    readDice() {
+        return this.dice.map(({mesh}) => {
+            const diceFaces = mesh.geometry.faces.filter(face => face.materialIndex !== 0);
+            const faceDirection = diceFaces.length === 4 ? new Vector3(0,0,-1) : new Vector3(0,0,1)
+            const upFace = diceFaces.reduce((agg, face) => {
+                    var angle = face.normal.clone().applyQuaternion(mesh.quaternion).angleTo(faceDirection);
+                    if (angle < agg.angle) {
+                        return { face, angle };
+                    } else {
+                        return agg;
+                    }
+                }, {face: null, angle: Number.MAX_VALUE}).face;
+            
+            return upFace.materialIndex - 1;
+        });
+    }
 
+    dispose() {
+        if (this.lastPromise) {
+            this.lastPromise.reject();
+        } 
+        cancelAnimationFrame(this.animation);
+    }
     
     resize() {
         this.width = this.container.clientWidth;
@@ -118,29 +159,5 @@ export class DiceBoardController {
         this.renderer.setSize(this.width, this.height, false);
         this.camera.updateProjectionMatrix();
         this.renderer.render(this.scene, this.camera);
-    }
-
-    addDice(dice, position = {x: 0, y: 0, z: 0}, velocity = {x: 0, y: 0, z: 0}, angle = {x: 0, y: 0, z: 0}, axis = {x: 0, y: 0, z: 0, a: 10}) {
-        position = Object.assign({x: 0, y: 0, z: 0}, position);
-        velocity = Object.assign({x: 0, y: 0, z: 0}, velocity);
-        angle = Object.assign({x: 0, y: 0, z: 0}, angle);
-        axis = Object.assign({x: 0, y: 0, z: 0, a: 0}, axis);
-
-        dice.castShadow = true;
-        dice.body = new Body({
-            mass: dice.mass,
-            shape: dice.geometry.cannon_shape,
-            // TODO: use dice_body_material to reduce material creation.
-            // material: this.dice_body_material,
-        });
-        dice.body.position.set(position.x, position.y, position.z);
-        dice.body.quaternion.setFromAxisAngle(new Vec3(axis.x, axis.y, axis.z), axis.a * Math.PI * 2);
-        dice.body.angularVelocity.set(angle.x, angle.y, angle.z);
-        dice.body.velocity.set(velocity.x, velocity.y, velocity.z);
-        dice.body.linearDamping = 0.1;
-        dice.body.angularDamping = 0.1;
-        this.scene.add(dice);
-        // this.dices.push(dice);
-        this.world.add(dice.body);
     }
 } 

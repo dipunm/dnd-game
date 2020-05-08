@@ -8,6 +8,7 @@ import DiceBoard from '../DiceBoard/DiceBoard';
 
 export default () => {
     const { username, displayName } = useObservable(UserObservable) || {}
+    const [modalVisible, setModalVisible] = useState(true);
 
     return (
         <>
@@ -24,8 +25,8 @@ export default () => {
                     </h1>
                 </header>
                 <section className="App-game">
-                    <Modal show={true}>
-                        <DiceBoard />
+                    <Modal show={modalVisible}>
+                        <DiceBoard notation={'3d4'} onResult={() => setModalVisible(false)} />
                     </Modal>
                 </section>
             </main>

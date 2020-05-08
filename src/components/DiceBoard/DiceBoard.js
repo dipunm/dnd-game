@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, forwardRef } from 'react';
+import React, { useRef, useEffect, forwardRef, useState, useMemo } from 'react';
 import './DiceBoard.css';
 import { DiceBoardController } from '../../lib/DiceBoardController';
 import lintTexture from './noisy-texture.png';
@@ -10,14 +10,45 @@ const UnmanagedEmptyDiv = forwardRef((props, ref) =>  {
     return (<div {...props} ref={ref} dangerouslySetInnerHTML={staticEmptyMarkup} />);
 });
 
-export default function DiceBoard() {
+export default function DiceBoard({ notation = 'd20', reason = 'initiative', onResult }) {
     const canvasRef = useRef(null);
     const diceBoardRef = useRef(null);
+    const [rolled, setRolled] = useState(false);
+    const [result, setResult] = useState(null);
     const diceBoard = diceBoardRef.current;
-    window.db = diceBoard;
     useEffect(() => {
        diceBoardRef.current = new DiceBoardController(canvasRef.current);
     }, [canvasRef]);
+
+    
+    const dice = useMemo(() => {
+        if (/^(\d*d\d+)(\d*d\d+[+])*$/.test(notation)){
+            return (notation.match(/\d+d\d+/g) || [ '3d20' ]).reduce((agg, x) => {
+                const multiple = parseInt(x);
+                if (Number.isNaN(multiple)) {
+                    return [...agg, x];
+                } else {
+                    const die = x.match(/d\d+/)[0];
+                    return [...agg, ...Array(multiple).fill(die)]
+                }
+            }, []);
+        } else {
+            throw new Error(`${notation} is not valid dice notation.`)
+        }
+    }, [notation]);
+
+    const displayResults = (values) => {
+        setResult(
+                <>{values.join(' + ')} = {values.reduce((sum, n) => sum + n, 0)}
+                <br />
+                <u>close</u>
+                </>);
+    };
+
+    function roll() {
+        diceBoard.roll(dice).then(displayResults);
+        setRolled(true);
+    }
 
     const borderThickness = 40;
     return (
@@ -42,6 +73,17 @@ export default function DiceBoard() {
                 boxShadow: 'inset 0 0 10px 10px #000',
                 overflow: 'hidden',
             }} ref={canvasRef} />
+
+            {!rolled && (
+                <div className="DiceBoard-overlay" onClick={roll}>
+                    Roll a {notation}{reason ? ` for ${reason}` : null}
+                </div>
+            )}
+            {rolled && result && (
+                <div className="DiceBoard-overlay" onClick={() => onResult(result)}>
+                    {result}
+                </div>
+            )}
         </div>
     )
 }

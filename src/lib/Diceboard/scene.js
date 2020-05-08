@@ -24,7 +24,7 @@ function createAmbientLighting() {
 function createSpotlight() {
     const light = new SpotLight(spot_light_color, 1.2);
     light.angle=0.5;
-    light.position.set(-200, 700, 1200);
+    light.position.set(-200, 1200, 1800);
     light.target.position.set(0, 0, 0);
     light.distance = 50000;
     light.castShadow = true;

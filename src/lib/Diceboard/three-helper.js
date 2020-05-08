@@ -1,4 +1,4 @@
-import { Vector3, Geometry, Face3, Vector2, Sphere, Texture, FlatShading, MeshPhongMaterial } from "three";
+import { Vector3, Geometry, Face3, Vector2, Sphere, Texture, MeshPhongMaterial } from "three";
 
 const label_color = '#bbb';
 const dice_color = '#302438';
@@ -15,6 +15,10 @@ function calc_texture_size(approx) {
 }
 
 export function create_dice_materials(face_labels, size, margin) {
+    if (face_labels.length && typeof face_labels[0] === 'object') {
+        return create_d4_materials(size, margin, face_labels);
+    }
+
     function create_text_texture(text, color, back_color) {
         if (text == undefined) return null;
         var canvas = document.createElement("canvas");
@@ -42,7 +46,37 @@ export function create_dice_materials(face_labels, size, margin) {
     return materials;
 }
 
-export function make_geom(vertices, faces, radius, tab, af) {
+const create_d4_materials = function(size, margin, labels) {
+    function create_d4_text(text, color, back_color) {
+        var canvas = document.createElement("canvas");
+        var context = canvas.getContext("2d");
+        var ts = calc_texture_size(size + margin) * 2;
+        canvas.width = canvas.height = ts;
+        context.font = (ts - margin) / 1.5 + "pt Arial";
+        context.fillStyle = back_color;
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.textAlign = "center";
+        context.textBaseline = "middle";
+        context.fillStyle = color;
+        for (var i in text) {
+            context.fillText(text[i], canvas.width / 2,
+                    canvas.height / 2 - ts * 0.3);
+            context.translate(canvas.width / 2, canvas.height / 2);
+            context.rotate(Math.PI * 2 / 3);
+            context.translate(-canvas.width / 2, -canvas.height / 2);
+        }
+        var texture = new Texture(canvas);
+        texture.needsUpdate = true;
+        return texture;
+    }
+    var materials = [];
+    for (var i = 0; i < labels.length; ++i)
+        materials.push(new MeshPhongMaterial(Object.assign({}, material_options,
+                    { map: create_d4_text(labels[i], label_color, dice_color) })));
+    return materials;
+}
+
+export function make_geom(vertices, faces, radius, tab, fontAngle) {
     var geom = new Geometry();
     for (var i = 0; i < vertices.length; ++i) {
         var vertex = vertices[i].multiplyScalar(radius);
@@ -55,12 +89,12 @@ export function make_geom(vertices, faces, radius, tab, af) {
             geom.faces.push(new Face3(ii[0], ii[j + 1], ii[j + 2], [geom.vertices[ii[0]],
                         geom.vertices[ii[j + 1]], geom.vertices[ii[j + 2]]], 0, ii[fl] + 1));
             geom.faceVertexUvs[0].push([
-                    new Vector2((Math.cos(af) + 1 + tab) / 2 / (1 + tab),
-                        (Math.sin(af) + 1 + tab) / 2 / (1 + tab)),
-                    new Vector2((Math.cos(aa * (j + 1) + af) + 1 + tab) / 2 / (1 + tab),
-                        (Math.sin(aa * (j + 1) + af) + 1 + tab) / 2 / (1 + tab)),
-                    new Vector2((Math.cos(aa * (j + 2) + af) + 1 + tab) / 2 / (1 + tab),
-                        (Math.sin(aa * (j + 2) + af) + 1 + tab) / 2 / (1 + tab))]);
+                    new Vector2((Math.cos(fontAngle) + 1 + tab) / 2 / (1 + tab),
+                        (Math.sin(fontAngle) + 1 + tab) / 2 / (1 + tab)),
+                    new Vector2((Math.cos(aa * (j + 1) + fontAngle) + 1 + tab) / 2 / (1 + tab),
+                        (Math.sin(aa * (j + 1) + fontAngle) + 1 + tab) / 2 / (1 + tab)),
+                    new Vector2((Math.cos(aa * (j + 2) + fontAngle) + 1 + tab) / 2 / (1 + tab),
+                        (Math.sin(aa * (j + 2) + fontAngle) + 1 + tab) / 2 / (1 + tab))]);
         }
     }
     geom.computeFaceNormals();

@@ -6,6 +6,10 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "@types/jest": "^24.0.0",
+    "@types/node": "^12.0.0",
+    "@types/react": "^16.9.0",
+    "@types/react-dom": "^16.9.0",
     "cannon": "^0.6.2",
     "concurrently": "^5.1.0",
     "express": "^4.17.1",
@@ -20,13 +24,13 @@
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",
     "three": "^0.115.0",
-    "three-to-cannon": "^2.1.0"
+    "three-to-cannon": "^2.1.0",
+    "typescript": "~3.7.2"
   },
   "scripts": {
     "start:react": "react-scripts start",
     "start:node": "node bin/start-dev-server",
     "start": "concurrently --kill-others-on-fail npm:start:*",
-    "broadcast": "bin/ngrok http 8888",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, forwardRef, useState, useMemo } from 'react';
 import './DiceBoard.css';
-import { DiceBoardController } from '../../lib/DiceBoardController';
+import { DiceBoardController } from '../../../lib/DiceBoardController';
 import lintTexture from './noisy-texture.png';
 import woodTexture from './wood-texture.png';
 

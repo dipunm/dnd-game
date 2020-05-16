@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import TextareaAutoSize from 'react-textarea-autosize';
 import './Chat.css';
-import ChatObservable from '../../observables/ChatObservable';
+import ChatObservable from '../../../observables/ChatObservable';
 import { useObservable } from 'react-use';
 
 const ENTER = 13;

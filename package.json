@@ -3,17 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "@types/jest": "^24.0.0",
-    "@types/node": "^12.0.0",
-    "@types/react": "^16.9.0",
-    "@types/react-dom": "^16.9.0",
-    "@types/socket.io": "^2.1.4",
-    "@types/socket.io-client": "^1.4.32",
     "cannon": "^0.6.2",
+    "color": "^3.1.2",
     "concurrently": "^5.2.0",
+    "grommet-icons": "^4.4.0",
     "nodemon": "^2.0.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -21,17 +14,20 @@
     "react-scripts": "3.4.1",
     "react-textarea-autosize": "^7.1.2",
     "react-use": "^14.2.0",
+    "reakit": "^1.0.0",
     "seedrandom": "^3.0.5",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",
+    "styled-components": "^5.1.0",
     "three": "^0.116.1",
     "ts-node": "^8.10.1",
     "typescript": "^3.8.3",
+    "use-focus-visible": "^1.0.0",
     "wait-on": "^5.0.0"
   },
   "scripts": {
     "start:react": "wait-on -t 5000 -w 1000 tcp:8888 && react-scripts start",
-    "start:node": "nodemon",
+    "start:node": "wait-on -r tcp:8888 && nodemon",
     "start": "concurrently --kill-others-on-fail npm:start:*",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -52,5 +48,19 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:8888"
+  "proxy": "http://localhost:8888",
+  "devDependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "@types/classnames": "^2.2.10",
+    "@types/color": "^3.0.1",
+    "@types/jest": "^24.0.0",
+    "@types/node": "^12.0.0",
+    "@types/react": "^16.9.0",
+    "@types/react-dom": "^16.9.0",
+    "@types/socket.io": "^2.1.4",
+    "@types/socket.io-client": "^1.4.32",
+    "@types/styled-components": "^5.1.0"
+  }
 }

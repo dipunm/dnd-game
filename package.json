@@ -10,9 +10,10 @@
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
+    "@types/socket.io": "^2.1.4",
+    "@types/socket.io-client": "^1.4.32",
     "cannon": "^0.6.2",
-    "concurrently": "^5.1.0",
-    "express": "^4.17.1",
+    "concurrently": "^5.2.0",
     "nodemon": "^2.0.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -23,19 +24,19 @@
     "seedrandom": "^3.0.5",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",
-    "three": "^0.115.0",
-    "three-to-cannon": "^2.1.0",
-    "typescript": "~3.7.2"
+    "three": "^0.116.1",
+    "ts-node": "^8.10.1",
+    "typescript": "^3.8.3",
+    "wait-on": "^5.0.0"
   },
   "scripts": {
-    "start:react": "react-scripts start",
-    "start:node": "node bin/start-dev-server",
+    "start:react": "wait-on -t 5000 -w 1000 tcp:8888 && react-scripts start",
+    "start:node": "nodemon",
     "start": "concurrently --kill-others-on-fail npm:start:*",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://localhost:8888",
   "eslintConfig": {
     "extends": "react-app"
   },
@@ -50,5 +51,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "proxy": "http://localhost:8888"
 }

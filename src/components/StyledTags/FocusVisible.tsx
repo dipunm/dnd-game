@@ -20,22 +20,42 @@ export function withFocusVisibleAttr<TProps>(Component:  React.ComponentType<TPr
 
 export const defaultFocusStyle = css`
         box-shadow: 0 4px 2px -3px ${colors.outline};
-        transition: box-shadow 160ms ease-in;
 `;
 export const focusStyles = (customStyle = defaultFocusStyle) => css`
-    &[focus-visible]::-moz-focus-inner {
-        border: 0;
+    /**
+     * when focus-visible attr is missing
+     * rely on browser :focus-visible using
+     * backwards compatible technique:
+     */
+    &:not([focus-visible]) {
+        &:focus {
+            ${customStyle}
+        }
+
+        &:focus:not(:focus-visible) {
+            outline: none;
+        }
+
+        &::-moz-focus-inner {
+            border: 0;
+        }
     }
+
+    /** 
+     * when focus-visible attr available, 
+     * we reset browser focus styles by default.
+     */
+    &[focus-visible] {
+        &:focus {
+            outline: none;
+        }
     
-    &[focus-visible=true] {
-        ${customStyle}
+        &::-moz-focus-inner {
+            border: 0;
+        }
     }
 
-    &:focus:not([focus-visible]) {
+    &[focus-visible=true]:focus {
         ${customStyle}
-    }
-
-    &:focus:not(:focus-visible) {
-        outline: none;
     }
 `;

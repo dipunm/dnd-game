@@ -1,9 +1,15 @@
-import { TabList as ReakitTabList, Tab as ReakitTab, TabPanel as ReakitTabPanel, useTabState } from "reakit/Tab";
+import { 
+    TabList as ReakitTabList, 
+    Tab as ReakitTab, 
+    TabPanel as ReakitTabPanel,
+
+    MenuButton as ReakitMenuButton, Menu, MenuItem,
+
+    Button,
+} from "reakit";
 import styled, { css } from "styled-components";
-import { withFocusVisibleAttr, focusStyles } from "./FocusVisible";
+import { withFocusVisibleAttr, focusStyles, defaultFocusStyle } from "./FocusVisible";
 import colors from "../../constants/colors";
-import Color from "color";
-import { Button } from "reakit/Button";
 
 export const TabList = styled(ReakitTabList)`
     min-height: 48px;
@@ -25,15 +31,14 @@ export const Tab = styled(tab)`
     padding: 0.5em;
     text-transform: uppercase;
     position: relative;
-    border-bottom: 2px solid transparent;
+    border: 3px solid transparent;
 
     &[aria-disabled] {
-        font-weight: bold;
-        color: ${colors.primary_dark};
+        color: ${colors.black};
     }
 
     &[aria-selected=true] {
-        border-bottom: 2px solid ${colors.accent};
+        border-bottom: 3px solid ${colors.accent};
     }
 
     &:hover {
@@ -41,18 +46,20 @@ export const Tab = styled(tab)`
     }
 
     ${focusStyles(css`
-        box-shadow: inset 0 0 100vh 1px ${Color(colors.accent).alpha(0.15).toString()};
-        transition: box-shadow 160ms ease-in;
+        font-weight: bold;
+        box-shadow: inset 0px -2px 3px black;
     `)}
 `;
 
 const tabPanel = withFocusVisibleAttr(ReakitTabPanel);
 export const TabPanel = styled(tabPanel)`
-    outline: 1px dotted ${colors.offwhite};
-    outline-offset: -7px;
+    ${focusStyles(css`
+        box-shadow: inset 0 0 5px 0px ${colors.accent};
+    `)}
 `;
 
-export const NavButton = styled(Button)`
+const button = withFocusVisibleAttr(Button);
+export const NavButton = styled(button)`
     background: none;
     border: none;
     color: ${colors.white};
@@ -61,4 +68,55 @@ export const NavButton = styled(Button)`
         stroke: none;
         fill: ${colors.offwhite};
     }
+
+    ${focusStyles(css`
+        font-weight: bold;
+        box-shadow: inset 0px -2px 3px black;
+        svg {
+            fill: ${colors.offwhite};
+            stroke: ${colors.offwhite};
+        }
+    `)}
+`;
+
+const navButton = withFocusVisibleAttr(ReakitMenuButton);
+export const NavMenuButton = NavButton.withComponent(navButton);
+
+export const NavBar = styled.nav`
+    background: ${colors.primary};
+    box-shadow: 0 0 10px black;
+    max-width: inherit;
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    
+    ${TabList} {
+        flex-grow: 1;
+    }
+`;
+
+
+export const NavMenu = styled(Menu)`
+    background: ${colors.white};
+    border: 1px solid ${colors.grey};
+    box-shadow: 0px 1px 4px -2px black;
+    border-radius: 5px;
+    padding: 1ch 0;
+    z-index: 10;
+`;
+
+const menuItem = withFocusVisibleAttr(MenuItem)
+export const NavMenuItem = styled(menuItem)`
+    display: block;
+    font-size: 1em;
+    padding: 0.2ch 2ch;
+    background: none;
+    width: 100%;
+    border: none;
+    ${focusStyles(css`
+        background: ${colors.grey};
+        ${defaultFocusStyle};
+    `)}
 `;

@@ -6,7 +6,7 @@ interface User {
 }
 
 class UserObservable extends Observable<User | null> {
-    user: User | null;
+    private user: User | null;
     constructor() {
         const username = localStorage.getItem('username');
         const characterName = localStorage.getItem('characterName') || undefined;

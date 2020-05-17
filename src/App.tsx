@@ -21,7 +21,7 @@ import { FocusVisibleManager } from "use-focus-visible";
 const lock = ({width = 500, children = null, ...props}) => (
   <div {...props}>
     <span dangerouslySetInnerHTML={{__html: `<!-- Device Lock: ${width}px wide -->`}} />
-    <div>{children}</div>
+    <div style={{maxWidth: 'inherit'}}>{children}</div>
   </div>
 );
 const DeviceLock = styled(lock).attrs(() => ({ width: 500 }))`

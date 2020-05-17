@@ -10,6 +10,7 @@ import {
 import styled, { css } from "styled-components";
 import { withFocusVisibleAttr, focusStyles, defaultFocusStyle } from "./FocusVisible";
 import colors from "../../constants/colors";
+import Color from "color";
 
 export const TabList = styled(ReakitTabList)`
     min-height: 48px;
@@ -63,6 +64,7 @@ export const NavButton = styled(button)`
     background: none;
     border: none;
     color: ${colors.white};
+    cursor: pointer;
     
     svg {
         stroke: none;
@@ -87,6 +89,8 @@ export const NavBar = styled.nav`
     box-shadow: 0 0 10px black;
     max-width: inherit;
     width: 100%;
+    border: 1px solid ${colors.primary_dark};
+
 
     display: flex;
     flex-direction: row;
@@ -100,23 +104,46 @@ export const NavBar = styled.nav`
 
 export const NavMenu = styled(Menu)`
     background: ${colors.white};
-    border: 1px solid ${colors.grey};
-    box-shadow: 0px 1px 4px -2px black;
-    border-radius: 5px;
-    padding: 1ch 0;
+    border: 1px solid grey;
+    box-shadow: 0 0 -2px 5px ${colors.black};
+    border-radius: 4px;
     z-index: 10;
+    padding: 1px 0;
+    
+    &>* {
+        padding: 0.5rem;
+    }
+
+    &>hr {
+        padding: 0;
+        margin: 1px;
+    }
+    
+    &>small {
+        display: inline-block;
+    }
 `;
 
 const menuItem = withFocusVisibleAttr(MenuItem)
 export const NavMenuItem = styled(menuItem)`
     display: block;
     font-size: 1em;
-    padding: 0.2ch 2ch;
     background: none;
     width: 100%;
     border: none;
+    cursor: pointer;
+    
     ${focusStyles(css`
         background: ${colors.grey};
-        ${defaultFocusStyle};
+        border-top: 1px solid ${Color(colors.grey).darken(0.2).toString()};
+        border-bottom: 1px solid ${Color(colors.grey).darken(0.2).toString()};
     `)}
+    
+    &:hover {
+        background: ${colors.grey};
+    }
+`;
+
+export const NavLabel = styled.small`
+    color: ${Color(colors.black).alpha(0.5).toString()};
 `;

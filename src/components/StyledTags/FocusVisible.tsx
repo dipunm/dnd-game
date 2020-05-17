@@ -19,7 +19,7 @@ export function withFocusVisibleAttr<TProps>(Component:  React.ComponentType<TPr
 }
 
 export const defaultFocusStyle = css`
-        box-shadow: 0 4px 2px -3px ${colors.outline};
+        box-shadow: 0 5px 2px -3px ${colors.outline};
 `;
 export const focusStyles = (customStyle = defaultFocusStyle) => css`
     /**

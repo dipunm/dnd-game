@@ -29,10 +29,10 @@ export const Input = styled.input`
 `;
 
 const button = withFocusVisibleAttr(ReakitButton);
-export const Button = styled(button)`
-    background: ${colors.primary_washed};
-    border: 2px solid ${colors.primary_light};
-    color: ${colors.black};
+export const Button = styled(button)<{primary?: boolean}>`
+    background: ${props => props.primary ? colors.primary : colors.primary_washed};
+    color: ${props => props.primary ? colors.white : colors.black};
+    border: 2px solid ${props => props.primary ? colors.primary_dark : colors.primary_light};
     border-radius: 50px;
     padding: 0.3em 0.5em;
     cursor: pointer;
@@ -45,7 +45,7 @@ export const Button = styled(button)`
     }
 
     ${focusStyles()}
-`
+`;
 
 export const Form = styled.form`
     display: flex;

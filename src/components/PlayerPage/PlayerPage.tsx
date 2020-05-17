@@ -1,11 +1,13 @@
-import React from "react";
+import React, { ReactElement, ElementType } from "react";
 import styled from "styled-components";
-import { useMenuState, useTabState, Separator } from "reakit";
+import { useMenuState, useTabState, Separator, DialogDisclosure, useDialogState } from "reakit";
 import UserObservable from "../../observables/UserObservable";
-import { TabPanel, TabList, Tab, NavBar, NavMenuButton, NavMenu, NavMenuItem } from "../StyledTags/Navigation";
+import { TabPanel, TabList, Tab, NavBar, NavMenuButton, NavMenu, NavMenuItem, NavLabel } from "../StyledTags/Navigation";
 import { Button } from "../StyledTags/FormAndInputs";
 import { MoreVertical} from "grommet-icons";
 import { useObservable } from "react-use";
+import { withFocusVisibleAttr } from "../StyledTags/FocusVisible";
+import { DialogBackdrop, Dialog } from "../StyledTags/Dialog";
 
 const Main = styled.main`
     display: flex;
@@ -32,6 +34,27 @@ const InfoBox = styled.div`
     }
 `;
 
+function LogoutBtn({ className }: React.ComponentProps<ElementType>) {
+    const dialog = useDialogState({ modal: true, visible: true });
+
+    return (
+        <>
+            <DialogDisclosure className={className} as={NavMenuItem} {...dialog}>
+                Logout
+            </DialogDisclosure>
+            <DialogBackdrop {...dialog}>
+                <Dialog role="alertdialog" {...dialog}>
+                    <p>Are you sure you want to logout?</p>
+                    <div style={{ display: 'grid', gridAutoFlow: 'column', gap: '20px' }}>
+                        <Button primary onClick={() => UserObservable.reset()}>Yes</Button>
+                        <Button onClick={() => dialog.hide()}>Cancel</Button>
+                    </div>
+                </Dialog>
+            </DialogBackdrop>
+        </>
+    );
+}
+
 export default function PlayerPage() {
     const tab = useTabState();
     const menu = useMenuState({ placement: 'bottom-end', gutter: -10 });
@@ -47,14 +70,12 @@ export default function PlayerPage() {
                 </TabList>
                 <NavMenuButton {...menu}><MoreVertical /></NavMenuButton>
             </NavBar>
-            <NavMenu {...menu} aria-label="Navigation submenu">
-                <small>Logged in as <strong>{user?.username}</strong></small><br />
+            <NavMenu {...menu} aria-labelled-by="Navigation submenu">
+                <NavLabel>You are logged in as <strong>{user?.username}</strong></NavLabel>
                 <Separator />
-                <NavMenuItem {...menu} onClick={() => UserObservable.reset()}>
-                    Logout
-                </NavMenuItem>
+                <NavMenuItem {...menu} as={LogoutBtn} />
             </NavMenu>
-            <TabPanel {...tab}>
+            <TabPanel {...tab} tabIndex={-1}>
                 <Main>
                     <InfoBox>
                         <h1>Mighty Morphin Micheal Vick</h1>

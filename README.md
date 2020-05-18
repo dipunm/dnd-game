@@ -14,15 +14,19 @@ Once these are installed:
 
 ## This Project
 ### Typescript
-This project is written using typescript for both the client and server logic.
+This project is written using [Typescript](https://www.typescriptlang.org/docs/home) for both the client and server logic.
 
 ### Server and Socket<!-- autolink prevention -->.io
 The server code listens on port 8888, but is typically reached via the proxy provided by the [proxy feature of create-react-app](https://create-react-app.dev/docs/proxying-api-requests-in-development/).
 
 This project uses [socket.io](https://socket.io/) and all client-server communications are implemented using sockets to achieve _real-time, bidirectional and event-based communication._
 
-### styled components
+### Css and Styled Components
 Most css is implemented using [styled components](styled-components.com/). If you use vscode, the [vscode-styled-components](https://marketplace.visualstudio.com/items?itemName=jpoissonnier.vscode-styled-components) extension is recommended to help with syntax highlighting and autocomplete.
+
+Base colours have been defined in `src/constants` and are used as necessary. Transparency and other sass-like colour adjustments may be made using the included [Color](https://www.npmjs.com/package/color) library.
+
+[WIP] Base colors and other common values should be defined in the constants file, but colour adjustments made for the sake of unique visual effects can be made in the main source code but should be written so that changing the base color scheme will not easily break the effect.
 
 ### Folder Structure
 - `src/` 

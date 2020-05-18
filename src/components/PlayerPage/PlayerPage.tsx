@@ -15,7 +15,9 @@ const FlexStack = styled.div`
 
 const FlexFill = styled.div`
   flex-grow: 1;
-  overflow: auto;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
 `;
 
 
@@ -27,16 +29,23 @@ export default function PlayerPage() {
         <TabList {...tab}>
           <Tab {...tab}>{CharacterTabLabel}</Tab>
           <Tab {...tab}>{ChatTabLabel}</Tab>
+          <Tab {...tab}>Dice</Tab>
         </TabList>
         <More />
       </NavBar>
 
-      <FlexFill as={TabPanel} {...tab} tabIndex={-1}>
-        <CharacterSheet />
-      </FlexFill>
+      <FlexFill>
+        <TabPanel {...tab} tabIndex={-1} style={{ overflow: 'auto' }}>
+          <CharacterSheet />
+        </TabPanel>
 
-      <FlexFill as={TabPanel} {...tab} tabIndex={-1}>
-        <Chat />
+        <TabPanel {...tab} tabIndex={-1} style={{ overflow: 'auto', flexGrow: 1 }}>
+          <Chat />
+        </TabPanel>
+
+        <TabPanel {...tab} tabIndex={-1}>
+          This will host the dice.
+        </TabPanel>
       </FlexFill>
     </FlexStack>    
   )

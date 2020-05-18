@@ -17,7 +17,6 @@ const MessagePanel = styled.div`
 
     display: flex;
     flex-direction: column;
-    /* justify-content: end; */
 `;
 
 const ChatBar = styled.div`
@@ -34,8 +33,12 @@ export default function Chat() {
         <Container>
             <MessagePanel>
                 <Spacer />
+
+                <p>start</p>
                 <Button onClick={() => toggleSize()}>Toggle Big/Small</Button>
                 {bleh(large ? 40 : 5)}
+                <Button onClick={() => toggleSize()}>Toggle Big/Small</Button>
+                <p>end</p>
             </MessagePanel>
             <ChatBar>
                 <p>This is going to be our chat input bar.</p>
@@ -47,9 +50,7 @@ export default function Chat() {
 
 const bleh = (n:  Number) => (
     <>
-        <p>start</p>
         {Array<any>(n).fill(<p>scrollable</p>)}
-        <p>end</p>
     </>
 
 )

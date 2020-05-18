@@ -5,14 +5,16 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 For initial setup you need to have installed:
 * [nodejs](https://nodejs.org/en/download/)
 * [yarn](https://classic.yarnpkg.com/en/docs/install/)
-* Whatever IDE you like to code in (eg. [vscode](https://code.visualstudio.com/Download))
+* [vscode](https://code.visualstudio.com/Download) (optional) 
+* [vscode-styled-components](https://marketplace.visualstudio.com/items?itemName=jpoissonnier.vscode-styled-components) (optional)
 
 Once these are installed:
 * Clone the git repository
 * Install dependencies by running `yarn` from the project directory.
 * You may now start the project by running `yarn start`.
 
-## Folder Structure
+## Project structure
+### Folder Structure
 - `src/` 
   - Contains bootstrap files mostly.
 - `src/components/`
@@ -28,12 +30,17 @@ Once these are installed:
 - `public/`
   - Contains non React static files and the entry html file
 
+### Typescript
 This project is written using typescript for both the client and server logic.
 
+### Server and Socket<!-- autolink prevention -->.io
 The server code runs on port 8888 and is accessed using the [proxy feature of create-react-app](https://create-react-app.dev/docs/proxying-api-requests-in-development/).
 
 This project uses [socket.io](https://socket.io/) and all client-server communications are implemented using 
 _real-time, bidirectional and event-based communication._
+
+### styled components
+Css is implemented using [styled components](styled-components.com/). If you use vscode, the [vscode-styled-components](https://marketplace.visualstudio.com/items?itemName=jpoissonnier.vscode-styled-components) extension is recommended to help with syntax highlighting and autocomplete.
 
 ## Available Scripts
 

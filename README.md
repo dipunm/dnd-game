@@ -13,9 +13,20 @@ Once these are installed:
 * You may now start the project by running `yarn start`.
 
 ## Folder Structure
-- React and client-side code in `src/`
-- Server code in `server/`
-- Non-React static files and entry html file in `public/`
+- `src/` 
+  - Contains bootstrap files mostly.
+- `src/components/`
+  - Contains React components and the pages that compose them.
+- `src/constants/`
+  - Contains commonly used values such as color values.
+- `src/lib/`
+  - Contains React agnostic functionality.
+- `src/observables/`
+  - Application persisted and global state, and server communication are implemented using observables here. 
+- `server/`
+  - Contains the server-side code.
+- `public/`
+  - Contains non React static files and the entry html file
 
 This project is written using typescript for both the client and server logic.
 

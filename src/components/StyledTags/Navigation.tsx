@@ -89,7 +89,7 @@ export const NavBar = styled.nav`
     box-shadow: 0 0 10px black;
     max-width: inherit;
     width: 100%;
-    border: 1px solid ${colors.primary_dark};
+    border-bottom: 1px solid ${colors.primary_dark};
 
 
     display: flex;

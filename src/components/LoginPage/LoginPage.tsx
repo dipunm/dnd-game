@@ -6,14 +6,12 @@ import colors from '../../constants/colors'
 import UserObservable from "../../observables/UserObservable";
 
 const Container = styled.div`
-    margin: 0 auto;
     color: white;
     padding: 20px 20px 0 20px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
 
-    background: ${colors.primary};
     background:
     linear-gradient(115deg, transparent 75%, ${colors.primary_dark} 75%) 0 0,
     linear-gradient(245deg, transparent 75%, ${colors.primary_dark} 75%) 0 0,
@@ -22,7 +20,7 @@ const Container = styled.div`
     ${colors.primary};
     background-size: 10px 20px;
 
-    text-shadow: 0 0 2px 2px white;
+    text-shadow: 0 0 1px ${colors.primary_washed};
 `;
 
 const Block = styled.div`

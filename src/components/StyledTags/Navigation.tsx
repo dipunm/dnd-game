@@ -8,7 +8,7 @@ import {
     Button,
 } from "reakit";
 import styled, { css } from "styled-components";
-import { withFocusVisibleAttr, focusStyles, defaultFocusStyle } from "./FocusVisible";
+import { withFocusVisibleAttr, focusStyles } from "./FocusVisible";
 import colors from "../../constants/colors";
 import Color from "color";
 

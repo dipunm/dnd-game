@@ -1,6 +1,6 @@
 import React, { ElementType, ReactNode } from "react";
-import { useDialogState, DialogDisclosure, useTabState, useMenuState, Separator } from "reakit";
-import { NavMenuItem, NavBar, NavMenuButton, NavMenu, NavLabel, TabList, TabPanel, Tab } from "../StyledTags/Navigation";
+import { useDialogState, DialogDisclosure, useMenuState, Separator } from "reakit";
+import { NavMenuItem, NavMenuButton, NavMenu, NavLabel } from "../StyledTags/Navigation";
 import { Dialog, DialogBackdrop } from "../StyledTags/Dialog";
 import { Button } from "../StyledTags/FormAndInputs";
 import UserObservable from "../../observables/UserObservable";
@@ -40,7 +40,7 @@ export const More = () => {
   return (
     <>
       <NavMenuButton {...menu}><MoreVertical /></NavMenuButton>
-      <NavMenu {...menu} aria-labelled-by="Navigation submenu">
+      <NavMenu {...menu} aria-label="Navigation submenu">
         <NavLabel>You are logged in as <strong>{user?.username}</strong></NavLabel>
         <Separator />
         <NavMenuItem {...menu} as={LogoutBtn} />

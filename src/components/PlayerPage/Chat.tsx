@@ -1,11 +1,11 @@
-import React, { useCallback } from "react";
+import React from "react";
 import styled from "styled-components";
 import { Button } from "../StyledTags/FormAndInputs";
-import { useToggle, useObservable } from "react-use";
+import { useObservable } from "react-use";
 import TextareaAutoSize from 'react-textarea-autosize';
 import { MdSend } from "react-icons/md";
 import colors from "../../constants/colors";
-import ChatObservable, { Message } from "../../observables/ChatObservable";
+import ChatObservable from "../../observables/ChatObservable";
 import useChatInputBehaviour from "../../lib/useChatInputBehaviour";
 
 export const ChatTabLabel = 'Chat';
@@ -91,7 +91,6 @@ const UserName = styled.h2`
 
 export default function Chat() {
     const messages = useObservable(ChatObservable, []);
-    const [manyExamples, toggleExampleSize] = useToggle(false);
     const { inputProps, onFormSubmit } = useChatInputBehaviour({
         submitHandler: value => ChatObservable.sendMessage(value)
     });

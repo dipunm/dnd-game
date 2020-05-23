@@ -9,8 +9,6 @@ export class ChatInputObservable extends Subject<{action: 'update' | 'submit', v
     private changetime = 0;
     private deferredValue = '';
 
-    constructor() { super(); }
-
     onKeyPress({key, repeat, timeStamp, shiftKey}: KeyboardEvent): void {
         this.recordEnterState(key, true, timeStamp, repeat, shiftKey);
         if (this.enterIsActive && this.repeating)

@@ -32,7 +32,7 @@ export class BehaviourSubject<T> {
 
 export class Subject<T> {
     handlers: Handler<T>[];
-    protected constructor() {
+    constructor() {
         this.handlers = [];
     }
 

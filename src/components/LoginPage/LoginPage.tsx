@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import styled from "styled-components";
-import { CaretNext } from "grommet-icons";
+import { GrCaretNext } from "react-icons/gr";
 import { Input, Button, Form } from "../StyledTags/FormAndInputs";
 import colors from '../../constants/colors'
 import UserObservable from "../../observables/UserObservable";
@@ -57,7 +57,7 @@ function LoginPage() {
                     <Input id="login-username" value={username} onChange={e => setUsername(e.target.value)} 
                         autoFocus autoCapitalize={"none"} 
                         pattern="^[^\s]*$" required title="Must not contain spaces" />
-                    <Button type="submit">Enter <CaretNext size={"medium"} /></Button>
+                    <Button type="submit">Enter <GrCaretNext /></Button>
                 </Form>
             </Main>
         </Container>

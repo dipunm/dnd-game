@@ -5,7 +5,7 @@ import { Dialog, DialogBackdrop } from "../StyledTags/Dialog";
 import { Button } from "../StyledTags/FormAndInputs";
 import UserObservable from "../../observables/UserObservable";
 import { useObservable } from "react-use";
-import { MoreVertical } from "grommet-icons";
+import { GrMoreVertical } from "react-icons/gr";
 
 function LogoutBtn({ className }: React.ComponentProps<ElementType>) {
   const dialog = useDialogState({ modal: true, visible: true });
@@ -39,7 +39,7 @@ export const More = () => {
 
   return (
     <>
-      <NavMenuButton {...menu}><MoreVertical /></NavMenuButton>
+      <NavMenuButton {...menu}><GrMoreVertical /></NavMenuButton>
       <NavMenu {...menu} aria-label="Navigation submenu">
         <NavLabel>You are logged in as <strong>{user?.username}</strong></NavLabel>
         <Separator />

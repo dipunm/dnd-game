@@ -39,9 +39,11 @@ export const Button = styled(button)<{primary?: boolean}>`
     font-size: inherit;
     display: flex;
     justify-content: center;
+    align-items: center;
+    vertical-align: middle;
     
     svg {
-        margin-left: 20px;
+        margin-left: 1ch;
     }
 
     ${focusStyles()}

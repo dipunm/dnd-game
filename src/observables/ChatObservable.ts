@@ -1,10 +1,10 @@
-import Observable from "../lib/Observable";
+import { BehaviourSubject } from "../lib/Observable";
 import socket from '../lib/socket'
 import UserObservable from "./UserObservable";
 
-type Message = { message: string, handle: string };
+export type Message = { message: string, handle: string };
 
-class ChatObservable extends Observable<Message[]> {
+class ChatObservable extends BehaviourSubject<Message[]> {
     messages: Message[];
     username!: string;
     constructor() {

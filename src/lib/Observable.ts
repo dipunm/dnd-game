@@ -8,10 +8,10 @@ function createHandle(handlers: any[], handler: any) {
 
 type Handler<T> = (subject: T) => void
 
-export default class Observable<T> {
+export class BehaviourSubject<T> {
     handlers: Handler<T>[];
-    subject: any;
-    constructor(subject: any) {
+    subject: T;
+    protected constructor(subject: T) {
         this.subject = subject;
         this.handlers = [];
     }
@@ -26,6 +26,24 @@ export default class Observable<T> {
         this.subject = data;
         this.handlers.forEach((handler: (arg0: any) => void) => {
             handler(this.subject);
+        });
+    }
+}
+
+export class Subject<T> {
+    handlers: Handler<T>[];
+    protected constructor() {
+        this.handlers = [];
+    }
+
+    subscribe(handler: Handler<T>) {
+        this.handlers.push(handler);
+        return createHandle(this.handlers, handler);
+    }
+
+    emit(data: T) {
+        this.handlers.forEach((handler: (arg0: any) => void) => {
+            handler(data);
         });
     }
 }

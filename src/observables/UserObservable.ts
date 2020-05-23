@@ -1,11 +1,11 @@
-import Observable from "../lib/Observable";
+import { BehaviourSubject } from "../lib/Observable";
 
 interface User {
     username: string
     characterName?: string
 }
 
-class UserObservable extends Observable<User | null> {
+class UserObservable extends BehaviourSubject<User | null> {
     private user: User | null;
     constructor() {
         const username = localStorage.getItem('username');

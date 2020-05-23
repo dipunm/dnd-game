@@ -40,7 +40,7 @@ const MessagePanel = styled.div`
     overflow: auto;
 
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
 
 `;
 
@@ -83,18 +83,12 @@ export default function Chat() {
     return (
         <Container>
             <MessagePanel>
-                <Spacer grow={true} />
-                {messages.reduce<Message[]>((agg, x) => [x, ...agg], []).map(({ message }) => (
+                {messages.map(({ message }) => (
                     <div className="Chatbox-entry bubble">
                         {/* <h2 className="Chatbox-entry-handle">{handle}</h2> */}
                         <p style={{whiteSpace: 'pre-line'}}>{message}</p>
                     </div>
                 ))}
-                <p>start</p>
-                <Button onClick={() => toggleExampleSize()}>Toggle Big/Small</Button>
-                {bleh(manyExamples ? 40 : 5)}
-                <Button onClick={() => toggleExampleSize()}>Toggle Big/Small</Button>
-                <p>end</p>
                 <Spacer grow={false} />
             </MessagePanel>
             <ChatBar as={Spacer} />
@@ -105,10 +99,3 @@ export default function Chat() {
         </Container>
     );
 }
-
-const bleh = (n:  Number) => (
-    <>
-        {Array<any>(n).fill(<p>scrollable</p>)}
-    </>
-
-)

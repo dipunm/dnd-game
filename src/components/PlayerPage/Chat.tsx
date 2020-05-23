@@ -65,6 +65,30 @@ const Spacer = styled.div<{ grow: boolean }>`
     padding: 1px;
 `;
 
+const ChatMessage = styled.div`
+    text-align: left;
+    padding: 3px 10px;
+
+    border: #333 1px solid;
+    border-radius: 10px;
+    background-color: rgba(61, 173, 248, 0.2);
+    margin: 10px 0;
+    padding: 8px 10px 5px 10px;
+
+    p {
+        position: relative;
+        font-size: 0.9rem;
+        margin: 0;
+        padding: 5px 0;
+        white-space: pre-line;
+    }
+`;
+
+const UserName = styled.h2`
+    font-size: 0.9rem;
+    margin: 0;
+`;
+
 export default function Chat() {
     const messages = useObservable(ChatObservable, []);
     const [manyExamples, toggleExampleSize] = useToggle(false);
@@ -83,11 +107,12 @@ export default function Chat() {
     return (
         <Container>
             <MessagePanel>
-                {messages.map(({ message }) => (
-                    <div className="Chatbox-entry bubble">
-                        {/* <h2 className="Chatbox-entry-handle">{handle}</h2> */}
-                        <p style={{whiteSpace: 'pre-line'}}>{message}</p>
-                    </div>
+                <Spacer grow={true} />
+                {messages.map(({ handle, message }) => (
+                    <ChatMessage>
+                        <UserName>{handle}</UserName>
+                        <p>{message}</p>
+                    </ChatMessage>
                 ))}
                 <Spacer grow={false} />
             </MessagePanel>

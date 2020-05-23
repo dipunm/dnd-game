@@ -11,10 +11,9 @@ import useChatInputBehaviour from "../../lib/useChatInputBehaviour";
 export const ChatTabLabel = 'Chat';
 
 const MyTextareaAutoSize = React.forwardRef<HTMLTextAreaElement>((props, ref) => {
-    return (<>
-        <input {...props} />
+    return (
         <TextareaAutoSize {...props} inputRef={ref || undefined} />
-    </>);
+    );
 });
 
 const MessageInput = styled(MyTextareaAutoSize)`

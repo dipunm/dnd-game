@@ -25,12 +25,12 @@ mongoose.connect(uri, (err: any) => {
     }
 });
 
-var database = mongoose.connection;
+/*var database = mongoose.connection;
 var chatMsgSchema = new mongoose.Schema({
     handle: String,
     message: String
 });
-var ChatMsg = mongoose.model('ChatMsg', chatMsgSchema);
+var ChatMsg = mongoose.model('ChatMsg', chatMsgSchema);*/
 
 io.on('connection', socket => {
     console.log('Hey! a connection', socket.id);

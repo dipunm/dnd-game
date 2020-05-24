@@ -15,12 +15,6 @@ var port = process.env.PORT || 8888;
 
 app.use(express.static(path.join(__dirname, '../build')))
 
-io.on('connection', socket => {
-    console.log('Hey! a connection', socket.id);
-
-    socket.on('chat', data => io.emit('chat', data));
-});
-
 mongoose.connect(uri, (err: any) => {
     if (err) {
         console.log("Mongo Error:" + err.message);
@@ -29,6 +23,33 @@ mongoose.connect(uri, (err: any) => {
     {
         console.log("Success.");
     }
+});
+var database = mongoose.connection;
+
+
+io.on('connection', socket => {
+    console.log('Hey! a connection', socket.id);
+    
+
+    socket.on('chat', (handle, message) => {
+        io.emit('chat', {handle, message});
+        var chatMsgSchema = new mongoose.Schema({
+            handle: String,
+            message: String
+        });
+        var ChatMsg = mongoose.model('ChatMsg', chatMsgSchema);
+        var chatMsg = new ChatMsg({
+            handle,
+            message
+        });
+        chatMsg.save(err => {
+            if (err) return console.error(err); // Should I use this, or console.log(err.message)?
+        });
+        ChatMsg.find((err, chatMsgs) => {
+            if (err) return console.error(err);
+            console.log(chatMsgs);
+        })
+    });
 });
 
 server.listen(port, () => {

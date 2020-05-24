@@ -37,14 +37,18 @@ io.on('connection', socket => {
             handle: String,
             message: String
         });
+        console.log("1");
         var ChatMsg = mongoose.model('ChatMsg', chatMsgSchema);
+        console.log("2");
         var chatMsg = new ChatMsg({
             handle,
             message
         });
+        console.log("3");
         chatMsg.save(err => {
             if (err) return console.error(err); // Should I use this, or console.log(err.message)?
         });
+        console.log("4");
         ChatMsg.find((err, chatMsgs) => {
             if (err) return console.error(err);
             console.log(chatMsgs);

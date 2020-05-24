@@ -24,21 +24,19 @@ mongoose.connect(uri, (err: any) => {
         console.log("Success.");
     }
 });
-var database = mongoose.connection;
 
+var database = mongoose.connection;
+var chatMsgSchema = new mongoose.Schema({
+    handle: String,
+    message: String
+});
+var ChatMsg = mongoose.model('ChatMsg', chatMsgSchema);
 
 io.on('connection', socket => {
     console.log('Hey! a connection', socket.id);
     
-
     socket.on('chat', (handle, message) => {
         io.emit('chat', {handle, message});
-        var chatMsgSchema = new mongoose.Schema({
-            handle: String,
-            message: String
-        });
-        console.log("1");
-        var ChatMsg = mongoose.model('ChatMsg', chatMsgSchema);
         console.log("2");
         var chatMsg = new ChatMsg({
             handle,

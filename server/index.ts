@@ -38,7 +38,7 @@ io.on('connection', socket => {
     socket.on('chat', (handle, message) => {
         io.emit('chat', {handle, message});
         
-        var chatMsg = new ChatMsg({
+        /*var chatMsg = new ChatMsg({
             handle,
             message
         });
@@ -47,7 +47,7 @@ io.on('connection', socket => {
             if (err) return console.error(err); // Should I use this, or console.log(err.message)?
         });
         console.log("4");
-        /*ChatMsg.find((err, chatMsgs) => {
+        ChatMsg.find((err, chatMsgs) => {
             if (err) return console.error(err);
             console.log("5");
             console.log(JSON.stringify(chatMsgs.values()));

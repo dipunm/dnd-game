@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/express": "^4.17.6",
     "@types/react-textarea-autosize": "^4.3.5",
     "cannon": "^0.6.2",
     "color": "^3.1.2",
     "concurrently": "^5.2.0",
+    "express": "^4.17.1",
     "nodemon": "^2.0.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -30,9 +32,10 @@
     "start:react": "wait-on -t 5000 -w 1000 tcp:8888 && react-scripts start",
     "start:node": "wait-on -r tcp:8888 && nodemon",
     "start": "concurrently --kill-others-on-fail npm:start:*",
-    "build": "react-scripts build",
+    "build": "react-scripts build && tsc --p server",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "heroku-postinstall": "yarn build"
   },
   "eslintConfig": {
     "extends": "react-app"

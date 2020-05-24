@@ -1,10 +1,12 @@
 {
   "compilerOptions": {
     "target": "ES6",
-    "module": "commonjs",
+    "module": "CommonJS",
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true
-  }
+    "outDir": "../build",
+    "skipLibCheck": true
+  },
+  "files": ["index.ts"]
 }

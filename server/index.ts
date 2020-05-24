@@ -35,8 +35,8 @@ var ChatMsg = mongoose.model('ChatMsg', chatMsgSchema);*/
 io.on('connection', socket => {
     console.log('Hey! a connection', socket.id);
     
-    socket.on('chat', (handle, message) => {
-        io.emit('chat', {handle, message});
+    socket.on('chat', (data) => {
+        io.emit('chat', data);
         
         /*var chatMsg = new ChatMsg({
             handle,

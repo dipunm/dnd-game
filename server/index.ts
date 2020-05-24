@@ -21,7 +21,7 @@ mongoose.connect(uri, (err: any) => {
     }
     else
     {
-        console.log("Success.");
+        console.log("Successfully connected to the database.");
     }
 });
 
@@ -37,7 +37,7 @@ io.on('connection', socket => {
     
     socket.on('chat', (handle, message) => {
         io.emit('chat', {handle, message});
-        console.log("2");
+        
         var chatMsg = new ChatMsg({
             handle,
             message
@@ -49,7 +49,8 @@ io.on('connection', socket => {
         console.log("4");
         ChatMsg.find((err, chatMsgs) => {
             if (err) return console.error(err);
-            console.log(JSON.stringify(chatMsgs));
+            console.log(5);
+            console.log(JSON.stringify(chatMsgs.values()));
         })
     });
 });

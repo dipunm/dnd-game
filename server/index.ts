@@ -2,7 +2,8 @@ import path from 'path';
 import express from 'express';
 import http from 'http';
 import socketio from 'socket.io';
-import * as mongoose from "mongoose";
+//import * as mongoosed from "mongoose";
+import mongoose from 'mongoose';
 
 const app = express();
 const server = http.createServer(app);

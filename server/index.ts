@@ -49,7 +49,7 @@ io.on('connection', socket => {
         console.log("4");
         ChatMsg.find((err, chatMsgs) => {
             if (err) return console.error(err);
-            console.log(chatMsgs);
+            console.log(JSON.stringify(chatMsgs));
         })
     });
 });

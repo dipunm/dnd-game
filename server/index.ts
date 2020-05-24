@@ -18,5 +18,6 @@ io.on('connection', socket => {
     socket.on('chat', data => io.emit('chat', data));
 });
 
-io.listen(port);
-console.log(`socket.io listening on port ${port}`);
+server.listen(port, () => {
+    console.log(`socket.io listening on port ${port}`);
+});

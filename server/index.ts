@@ -8,7 +8,7 @@ import mongoose from 'mongoose';
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
-const uri: string = "mongodb://Test:7xO99ZFXv^x\@9cLc1@ds149433.mlab.com:49433/heroku_cfk6wf32";
+const uri: string = "mongodb://Test:iMc5Ln5P0xQS2OcOK@ds149433.mlab.com:49433/heroku_cfk6wf32";
 
 var port = process.env.PORT || 8888;
 
@@ -23,7 +23,7 @@ io.on('connection', socket => {
 
 mongoose.connect(uri, (err: any) => {
     if (err) {
-        console.log(err.message);
+        console.log("Mongo Error:" + err.message);
     }
     else
     {

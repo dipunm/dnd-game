@@ -8,7 +8,7 @@ import mongoose from 'mongoose';
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
-const uri: string = "mongodb://Test:iMc5Ln5P0xQS2OcOK@ds149433.mlab.com:49433/heroku_cfk6wf32";
+const uri: string = process.env.MONGODB_URI || "mongodb://Test:iMc5Ln5P0xQS2OcOK@ds149433.mlab.com:49433/heroku_cfk6wf32";
 
 var port = process.env.PORT || 8888;
 

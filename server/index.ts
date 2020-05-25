@@ -25,34 +25,27 @@ mongoose.connect(uri, (err: any) => {
     }
 });
 
-/*var database = mongoose.connection;
+var database = mongoose.connection;
 var chatMsgSchema = new mongoose.Schema({
     handle: String,
     message: String
 });
-var ChatMsg = mongoose.model('ChatMsg', chatMsgSchema);*/
+var ChatMsg = mongoose.model('ChatMsg', chatMsgSchema);
 
 io.on('connection', socket => {
     console.log('Hey! a connection', socket.id);
     
-    socket.on('chat', (data) => {
+    socket.on('chat', data => {
         io.emit('chat', data);
-        
-        /*var chatMsg = new ChatMsg({
-            handle,
-            message
-        });
-        console.log("3");
+        console.log(JSON.stringify(data));
+        var chatMsg = new ChatMsg(data);
         chatMsg.save(err => {
             if (err) return console.error(err); // Should I use this, or console.log(err.message)?
         });
-        console.log("4");
-        ChatMsg.find((err, chatMsgs) => {
+        ChatMsg.find({},{_id: 0, handle: 1, message: 1},(err, chatMsgs) => {
             if (err) return console.error(err);
-            console.log("5");
-            console.log(JSON.stringify(chatMsgs.values()));
-        });*/
-        // Fix validation error + displaying the db
+            console.log(JSON.stringify(chatMsgs, null, 2)); // Display the db
+        });
     });
 });
 

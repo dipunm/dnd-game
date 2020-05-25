@@ -33,7 +33,7 @@
     "wait-on": "^5.0.0"
   },
   "scripts": {
-    "start:react": "wait-on -t 7000 -w 1000 tcp:8888 && react-scripts start",
+    "start:react": "wait-on -t 10000 -w 1000 tcp:8888 && react-scripts start",
     "start:node": "wait-on -r tcp:8888 && nodemon",
     "start": "concurrently --kill-others-on-fail npm:start:*",
     "build": "react-scripts build && tsc --p server",

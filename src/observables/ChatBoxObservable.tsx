@@ -1,7 +1,7 @@
 import { Subject } from '../lib/Observable';
 import { ChangeEvent, KeyboardEvent } from 'react';
 
-export class ChatInputObservable extends Subject<{action: 'update' | 'submit', value: string}> {
+export class ChatBoxObservable extends Subject<{action: 'update' | 'submit', value: string}> {
     private enterIsActive = false;
     private shiftKey = false;
     private repeating = false;

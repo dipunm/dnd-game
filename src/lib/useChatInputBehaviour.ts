@@ -1,4 +1,4 @@
-import { ChatInputObservable } from "../observables/ChatInputObservable";
+import { ChatBoxObservable } from "../observables/ChatBoxObservable";
 import { useMemo, useEffect, useCallback, KeyboardEventHandler, ChangeEventHandler, useState, FormEventHandler, useRef } from "react";
 
 type Handler = (value: string) => void;
@@ -7,7 +7,7 @@ export default function useChatInputBehaviour(
     { submitHandler: Handler, initialValue?: string, refocusOnSubmit?: boolean, focusOnLoad?: boolean }
 ) {
     const [value, setValue] = useState(initialValue);
-    const observable = useMemo(() => new ChatInputObservable(), [ChatInputObservable]);
+    const observable = useMemo(() => new ChatBoxObservable(), [ChatBoxObservable]);
     const ref = useRef<HTMLTextAreaElement>(null);
     const handleSubmission = useCallback((value: string) => {
         const message = value.trim();
@@ -32,13 +32,13 @@ export default function useChatInputBehaviour(
             }
         });
         return handle.unsubscribe;
-    }, [observable, submitHandler]);
+    }, [observable, handleSubmission]);
 
     useEffect(() => {
         if (focusOnLoad) {
             ref.current?.focus();
         }
-    }, [ref])
+    }, [ref, focusOnLoad])
 
     return {
         inputProps: {

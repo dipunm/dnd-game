@@ -3,8 +3,6 @@ import socket from '../lib/socket'
 import UserObservable from "./UserObservable";
 import { boundMethod } from 'autobind-decorator'
 
-export type Message = { message: string, handle: string };
-
 class ChatObservable extends BehaviourSubject<Message[]> {
     messages: Message[];
     username!: string;

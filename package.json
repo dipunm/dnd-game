@@ -35,8 +35,8 @@
   },
   "scripts": {
     "start:react": "wait-on -t 10000 -w 1000 tcp:8888 && react-scripts start",
-    "start:node": "wait-on -r tcp:8888 && nodemon",
-    "start": "concurrently --kill-others-on-fail npm:start:*",
+    "start:server": "wait-on -r tcp:8888 && nodemon",
+    "start": "concurrently -k -n server,react -i 'yarn start:server' 'yarn start:react'",
     "build": "react-scripts build && tsc --p server",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

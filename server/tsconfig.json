@@ -9,5 +9,6 @@
     "skipLibCheck": true,
     "experimentalDecorators": true
   },
-  "files": ["index.ts"]
+  "files": ["index.ts"],
+  "include": ["../global.d.ts"]
 }

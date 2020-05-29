@@ -7,7 +7,7 @@ mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
 
 const uri: string = process.env.MONGODB_URI || "mongodb://Test:iMc5Ln5P0xQS2OcOK@ds149433.mlab.com:49433/heroku_cfk6wf32";
-mongoose.connect(uri, (err: any) => {
+mongoose.connect(uri, err => {
     if (err) {
         console.log("Mongo Error:" + err.message);
     }

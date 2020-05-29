@@ -2,7 +2,6 @@ import path from 'path';
 import express from 'express';
 import http from 'http';
 import socketio from 'socket.io';
-//import * as mongoosed from "mongoose";
 import mongoose from 'mongoose';
 
 const app = express();
@@ -25,28 +24,33 @@ mongoose.connect(uri, (err: any) => {
     }
 });
 
-var database = mongoose.connection;
-var chatMsgSchema = new mongoose.Schema({
+// Set up database variables
+const chatMsgSchema = new mongoose.Schema({
     handle: String,
     message: String
 });
-var ChatMsg = mongoose.model('ChatMsg', chatMsgSchema);
+const ChatMsg = mongoose.model('ChatMsg', chatMsgSchema);
 
 io.on('connection', socket => {
     console.log('Hey! a connection', socket.id);
     
     socket.on('chat', data => {
-        io.emit('chat', data);
-        console.log(JSON.stringify(data));
+        io.emit('chat', data); // Send the chat message to every other browser
+        // Save chat message to the database
         var chatMsg = new ChatMsg(data);
         chatMsg.save(err => {
             if (err) return console.error(err); // Should I use this, or console.log(err.message)?
         });
+    });
+
+    socket.on('chat-init', (callback) => {
+        // Send back the database, when ChatObservable emits this event
         ChatMsg.find({},{_id: 0, handle: 1, message: 1},(err, chatMsgs) => {
             if (err) return console.error(err);
-            console.log(JSON.stringify(chatMsgs, null, 2)); // Display the db
+            callback(chatMsgs.map((value) => value.toJSON())); // acts like return
         });
     });
+
 });
 
 server.listen(port, () => {

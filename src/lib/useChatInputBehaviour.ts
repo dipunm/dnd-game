@@ -7,7 +7,7 @@ export default function useChatInputBehaviour(
     { submitHandler: Handler, initialValue?: string, refocusOnSubmit?: boolean, focusOnLoad?: boolean }
 ) {
     const [value, setValue] = useState(initialValue);
-    const observable = useMemo(() => new ChatBoxObservable(), [ChatBoxObservable]);
+    const observable = useMemo(() => new ChatBoxObservable(), []);
     const ref = useRef<HTMLTextAreaElement>(null);
     const handleSubmission = useCallback((value: string) => {
         const message = value.trim();
@@ -47,7 +47,7 @@ export default function useChatInputBehaviour(
             onKeyPress: useCallback<KeyboardEventHandler>(e => observable.onKeyPress(e), [observable]),
             onKeyUp: useCallback<KeyboardEventHandler>(e => observable.onKeyUp(e), [observable]),
             onChange: useCallback<ChangeEventHandler<HTMLTextAreaElement>>(e => observable.onChange(e), [observable]),
-            ['aria-multiline']: 'false',
+            'aria-multiline': 'false',
         },
         onFormSubmit: useCallback<FormEventHandler>(e => { e.preventDefault(); handleSubmission(value); }, [handleSubmission, value]),
     };

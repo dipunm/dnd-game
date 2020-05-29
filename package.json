@@ -7,6 +7,7 @@
     "@types/mongodb": "^3.5.18",
     "@types/mongoose": "^5.7.21",
     "@types/react-textarea-autosize": "^4.3.5",
+    "autobind-decorator": "^2.4.0",
     "cannon": "^0.6.2",
     "color": "^3.1.2",
     "concurrently": "^5.2.0",

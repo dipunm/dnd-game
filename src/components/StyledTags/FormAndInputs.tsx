@@ -41,6 +41,8 @@ export const Button = styled(button)<{primary?: boolean}>`
     justify-content: center;
     align-items: center;
     vertical-align: middle;
+    font-family: 'Segoe UI';
+    font-weight: 600;
     
     svg {
         margin-left: 1ch;

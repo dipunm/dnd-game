@@ -21,7 +21,7 @@ class ChatObservable extends BehaviourSubject<Message[]> {
 
     @boundMethod
     private setMessages(chatMsgs: Message[]) {
-        this.messages.push(...chatMsgs); // Add the chat messages from the callback function in the server to the messages array (spread is required here to make it work?) 
+        this.messages.push(...chatMsgs); // Add the chat messages from the callback function in the server to the messages array
         this.emit([...this.messages]); // Send the new message array to Chat.tsx + all other "observers" (I assume any other file that uses this as an observable)
     }
 

@@ -1,3 +1,4 @@
+import { useLayoutEffect, useRef, useEffect } from "react";
 import React from "react";
 import styled from "styled-components";
 import { Button } from "../StyledTags/FormAndInputs";
@@ -65,17 +66,32 @@ const Spacer = styled.div<{ grow: boolean }>`
     padding: 1px;
 `;
 
-const ChatMessage = styled.div`
+const ChatMessage = styled.div<{ fromUser: String }>`
+
     text-align: left;
     padding: 3px 10px;
-
-    border: #333 1px solid;
-    border-radius: 10px;
-    background-color: rgba(61, 173, 248, 0.2);
-    margin: 10px 0;
+    /* border: #333 1px solid; */
+    /* border-radius: 10px; */
+    border-radius: .4em;
+    background-color: rgb(235, 189, 183);
+    margin: ${props => props.fromUser == ChatObservable.username ? "10px 20px 10px 60px" : "10px 60px 10px 20px" };
     padding: 8px 10px 5px 10px;
+    
+    ::after {
+        content: '';
+        position: relative;
+        border: 20px solid transparent;
+        border-top-color: rgb(235, 189, 183);
+        border-left: 0;
+        margin-left: 101%;
+        top: -38px; /*should really be relative*/
+    }
 
     p {
+        position: absolute;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
         position: relative;
         font-size: 0.9rem;
         margin: 0;
@@ -94,6 +110,37 @@ export default function Chat() {
     const { inputProps, onFormSubmit } = useChatInputBehaviour({
         submitHandler: value => ChatObservable.sendMessage(value)
     });
+    const myRef = useRef<HTMLDivElement>(null);
+    const oldScrollHeightRef = useRef(myRef.current?.scrollHeight ?? 0);
+    
+    // Temporary solution to oldScrollHeightRef not being defined until you send your first message (=0 when messages.length is updated for the first time)
+    useEffect(() => {
+        // Whilst the MessagePanel is undefined (I assume because the user is on a different tab), try to set the value of oldScrollHeight
+        if (oldScrollHeightRef.current === 0)
+        {
+            if (myRef.current?.scrollHeight != null)
+            {
+                console.log(myRef.current?.scrollHeight);
+                oldScrollHeightRef.current = myRef.current?.scrollHeight;
+            }
+        }
+    })
+    // Arguably inefficient, so I'd like to fix this at some point.
+    
+
+    useLayoutEffect(() => { // using useEffect here caused jittery behaviour, so instead, we're going to scroll before the messages are displayed on-screen
+        const {scrollTop = 0, clientHeight = 0} = myRef.current ?? {}; 
+        // {a, b} = c. Look for c.a and c.b and assign to vars called a,b 
+        // a ?? b. If a is null, return b
+        // const. constant within scope
+        const scrollPosition = scrollTop + clientHeight;
+        if (Math.abs(scrollPosition - oldScrollHeightRef.current) < 100) 
+        {
+            // Currently doesn't work first time?
+            myRef.current?.scrollTo(0, myRef.current?.scrollHeight);
+        }
+        oldScrollHeightRef.current = myRef.current?.scrollHeight ?? 0;
+    }, [messages.length]); // The dependency list indicates when the hook should be run. It essentially says "if messages.length changes, then run" which is exactly what we need
 
     /**
      * IDEAS/TODOS:
@@ -105,10 +152,10 @@ export default function Chat() {
 
     return (
         <Container>
-            <MessagePanel>
+            <MessagePanel ref={myRef}>
                 <Spacer grow={true} />
                 {messages.map(({ handle, message }) => (
-                    <ChatMessage>
+                    <ChatMessage fromUser={handle}>
                         <UserName>{handle}</UserName>
                         <p>{message}</p>
                     </ChatMessage>

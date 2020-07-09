@@ -57,7 +57,7 @@ function LoginPage() {
                     <Input id="login-username" value={username} onChange={e => setUsername(e.target.value)} 
                         autoFocus autoCapitalize={"none"} 
                         pattern="^[^\s]*$" required title="Must not contain spaces" />
-                    <Button type="submit">Enter<GrCaretNext size="16px" /></Button>
+                    <Button type="submit">Enter<GrCaretNext size="14px" /></Button>
                 </Form>
             </Main>
         </Container>

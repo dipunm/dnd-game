@@ -32,24 +32,28 @@ export const Tab = styled(tab)`
     padding: 0.5em;
     text-transform: uppercase;
     position: relative;
-    border: 3px solid transparent;
+    font-weight: bold;
+    /*border: 3px solid transparent;*/
 
     &[aria-disabled] {
         color: ${colors.black};
     }
 
     &[aria-selected=true] {
-        border-bottom: 3px solid ${colors.accent};
+        border-bottom: 5px solid ${colors.accent};
     }
 
     &:hover {
         cursor: pointer;
     }
 
-    ${focusStyles(css`
+    /*${focusStyles(css`
         font-weight: bold;
         box-shadow: inset 0px -2px 3px black;
-    `)}
+    `)}*/
+    ${focusStyles(css`
+        box-shadow: inset 0 -4px 3px -3px ${colors.outline};
+    `)}  
 `;
 
 const tabPanel = withFocusVisibleAttr(ReakitTabPanel);
@@ -57,7 +61,7 @@ export const TabPanel = styled(tabPanel)`
     overflow: auto;
     ${focusStyles(css`
         box-shadow: inset 0 0 5px 0px ${colors.accent};
-    `)}
+    `)} 
 `;
 
 const button = withFocusVisibleAttr(Button);
@@ -72,13 +76,16 @@ export const NavButton = styled(button)`
         fill: ${colors.offwhite};
     }
 
-    ${focusStyles(css`
+    /*${focusStyles(css`
         font-weight: bold;
         box-shadow: inset 0px -2px 3px black;
         svg {
             fill: ${colors.offwhite};
             stroke: ${colors.offwhite};
         }
+    `)}*/
+    ${focusStyles(css`
+        box-shadow: inset 0px -9px 3px -3px ${colors.outline};
     `)}
 `;
 
@@ -87,10 +94,10 @@ export const NavMenuButton = NavButton.withComponent(navButton);
 
 export const NavBar = styled.nav`
     background: ${colors.primary};
-    box-shadow: 0 0 10px black;
+    /*box-shadow: 0 0 10px black;*/
     max-width: inherit;
     width: 100%;
-    border-bottom: 1px solid ${colors.primary_dark};
+    /*border-bottom: 1px solid ${colors.primary_dark};*/
 
 
     display: flex;

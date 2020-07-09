@@ -4,10 +4,11 @@ import styled from "styled-components";
 import { Button } from "../StyledTags/FormAndInputs";
 import { useObservable } from "react-use";
 import TextareaAutoSize from 'react-textarea-autosize';
-import { MdSend } from "react-icons/md";
+import { IoIosArrowForward } from "react-icons/io";
 import colors from "../../constants/colors";
 import ChatObservable from "../../observables/ChatObservable";
 import useChatInputBehaviour from "../../lib/useChatInputBehaviour";
+import { focusStyles } from "../StyledTags/FocusVisible";
 
 export const ChatTabLabel = 'Chat';
 
@@ -16,7 +17,6 @@ const MyTextareaAutoSize = React.forwardRef<HTMLTextAreaElement>((props, ref) =>
         <TextareaAutoSize {...props} inputRef={ref || undefined} />
     );
 });
-
 const MessageInput = styled(MyTextareaAutoSize)`
     resize: none;
     flex-grow: 1;
@@ -27,32 +27,37 @@ const MessageInput = styled(MyTextareaAutoSize)`
     max-height: 4.4rem;
     min-height: 100%;
     box-sizing: border-box;
+    border-width: 0px; /*override*/
     border-radius: 10px;
+
+    ${focusStyles()}
+    :focus {
+        outline-width: 0px; /*override*/
+    }
 `;
 
 const Container = styled.div`
     display: flex;
     flex-direction: column;
     height: 100%;
+    background: ${colors.primary_washed};
 `;
 
 const MessagePanel = styled.div`
     flex-grow: 1;
     overflow: auto;
-
     display: flex;
     flex-direction: column;
 
 `;
 
 const ChatBar = styled.div`
-    background: ${colors.primary_dark};
     display: flex;
     align-items: flex-end;
     padding: 10px;
 
     button {
-        margin-left: 5px;
+        margin-left: 10px;
         min-height: 48px;
     }
     svg {
@@ -73,30 +78,28 @@ const ChatMessage = styled.div<{ fromUser: String }>`
     /* border: #333 1px solid; */
     /* border-radius: 10px; */
     border-radius: .4em;
-    background-color: rgb(235, 189, 183);
-    margin: ${props => props.fromUser == ChatObservable.username ? "10px 20px 10px 60px" : "10px 60px 10px 20px" };
-    padding: 8px 10px 5px 10px;
-    
-    ::after {
+    background-color: ${props => props.fromUser === ChatObservable.username ? colors.primary_chatbox_1 : colors.primary_chatbox_2};
+    margin: ${props => props.fromUser === ChatObservable.username ? "10px 20px 10px 60px" : "10px 60px 10px 20px" };
+    padding: 8px 10px 5px 10px;  
+
+    /* the tail of the speech bubble */
+    ::before {
         content: '';
         position: relative;
         border: 20px solid transparent;
-        border-top-color: rgb(235, 189, 183);
-        border-left: 0;
-        margin-left: 101%;
-        top: -38px; /*should really be relative*/
+        border-top-color: ${props => props.fromUser === ChatObservable.username ? colors.primary_chatbox_1 : colors.primary_chatbox_2};
+        ${props => props.fromUser === ChatObservable.username ? "float: right; border-left: 0; margin-right: -1.4em;" : "float: left; border-right: 0; margin-left: -1.4em;"}
     }
 
     p {
         position: absolute;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
+        overflow: visible;
+        overflow-wrap: break-word;
+        white-space: pre-line;
         position: relative;
         font-size: 0.9rem;
         margin: 0;
         padding: 5px 0;
-        white-space: pre-line;
     }
 `;
 
@@ -165,7 +168,7 @@ export default function Chat() {
             <ChatBar as={Spacer} />
             <ChatBar as="form" onSubmit={onFormSubmit}>
                 <MessageInput {...inputProps} ref={inputProps['ref']} />
-                <Button type="submit"><MdSend /></Button>
+                <Button type="submit"><IoIosArrowForward size="32px"/></Button>
             </ChatBar>
         </Container>
     );

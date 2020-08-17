@@ -29,20 +29,25 @@ Base colours have been defined in `src/constants` and are used as necessary. Tra
 [WIP] Base colors and other common values should be defined in the constants file, but colour adjustments made for the sake of unique visual effects can be made in the main source code but should be written so that changing the base color scheme will not easily break the effect.
 
 ### Folder Structure
+- `global.d.ts`
+  - A type definition file used to declare shared types between client and server code.
 - `src/` 
-  - Contains bootstrap files mostly.
-- `src/components/`
-  - Contains React components and the pages that compose them.
-- `src/constants/`
-  - Contains commonly used values such as color values.
-- `src/lib/`
-  - Contains React agnostic functionality.
-- `src/observables/`
-  - Application persisted and global state, and server communication are implemented using observables here. 
+  - Contains client side application code. The entry file is `index.tsx`.
+  - `src/components`
+    - Components of the application are bundles of related React components, functions, and helpers grouped by application features.
+  - `src/constants`
+    - Constant values used across the application.
+  - `src/controls`
+    - React components that are related to UI or UX and not the applications main logic.
+  - `src/layouts`
+    - React components that control the layout and responsiveness of the webpages.
+  - `src/libraries`
+    - Common shared classes, helper functions, and infrastructure code.
 - `server/`
-  - Contains the server-side code.
+  - Contains the server-side application code. The entry file is `index.ts`.
 - `public/`
-  - Contains non React static files and the entry html file
+  - Contains static files and the entry html file
+
 
 ## Available Scripts
 In the project directory, you can run:

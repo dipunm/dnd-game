@@ -154,8 +154,8 @@ export function ChatComponent() {
         <Container>
             <MessagePanel ref={myRef}>
                 <Spacer grow={true} />
-                {messages.map(({ handle, message }) => (
-                    <ChatMessage fromUser={handle}>
+                {messages.map(({ handle, message }, i) => (
+                    <ChatMessage key={i} fromUser={handle}>
                         <UserName>{handle}</UserName>
                         <p>{message}</p>
                     </ChatMessage>

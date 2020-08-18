@@ -15,7 +15,7 @@ import { DialogBackdrop } from './controls/dialog/DialogBackdrop';
 import { Button } from './controls/form-controls/Button';
 import { User } from './components/user-auth/UserObservable';
 import { ChatComponent } from './components/chat-window/ChatComponent';
-import { Dice } from './components/dice-board/Dice';
+import { DiceBoard } from './components/dice-board/DiceBoard';
 
 type PlayerPageProps = {
   user: User,
@@ -56,8 +56,8 @@ function PlayerPage({ user, logout }: PlayerPageProps) {
             <ChatComponent />
           </TabPanel>
     
-          <TabPanel {...tabProps} tabIndex={-1}>
-            <Dice />
+          <TabPanel {...tabProps} tabIndex={-1} style={{ flexGrow: 1 }}>
+            <DiceBoard />
           </TabPanel>
         </>
       )}

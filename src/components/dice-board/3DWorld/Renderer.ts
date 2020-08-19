@@ -55,7 +55,7 @@ export class Renderer {
         const animate = (time: number) => {
             this.animation = requestAnimationFrame(animate);
 
-            if (lastTime === 0) {
+            if (lastTime !== 0) {
                 const dt = (time - lastTime) / 1000;
                 this.world.step(1/60, dt);
             }

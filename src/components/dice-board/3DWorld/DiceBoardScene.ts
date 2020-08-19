@@ -1,5 +1,5 @@
-import { Scene, Mesh, PlaneGeometry, MeshPhongMaterial, AmbientLight, SpotLight, BoxGeometry, MeshBasicMaterial, TextureLoader, Vector2, RepeatWrapping } from "three";
-import { DiceBoardWorld } from "./DiceBoardWorld";
+import { Scene, Mesh, PlaneGeometry, MeshPhongMaterial, AmbientLight, SpotLight, BoxGeometry, TextureLoader, Vector2, RepeatWrapping } from "three";
+import { DiceBoardWorld, WorldMaterials } from "./DiceBoardWorld";
 import { Body } from "cannon";
 
 const ambient_light_color = 0xf0f5fb;
@@ -9,15 +9,15 @@ export class DiceBoardScene extends Scene {
     constructor(world: DiceBoardWorld) {
         super();
 
-        var geometry = new BoxGeometry();
-        var material = new MeshPhongMaterial( { color: 0x00ff00 } );
-        var cube = new Mesh( geometry, material );
-        cube.rotateY(2);
-        cube.rotateX(-0.8);
-        cube.position.set(0, 0, 50)
-        cube.scale.set(100, 100, 100);
-        cube.castShadow = true;
-        this.add( cube );
+        // var geometry = new BoxGeometry();
+        // var material = new MeshPhongMaterial( { color: 0x00ff00 } );
+        // var cube = new Mesh( geometry, material );
+        // cube.rotateY(2);
+        // cube.rotateX(-0.8);
+        // cube.position.set(0, 0, 50)
+        // cube.scale.set(100, 100, 100);
+        // cube.castShadow = true;
+        // this.add( cube );
 
         const { ambientlight, spotlight } = this.createLighting();
         this.add(ambientlight);
@@ -31,17 +31,18 @@ export class DiceBoardScene extends Scene {
         const tmpMap: { body: Body, mesh: Mesh }[] = [];
         world.bodies.forEach(body => {
             switch(body.material) {
-                case world.MATERIALS.floor:
+                case WorldMaterials.floor:
                     const floor = this.bodyMeshMap.find(map => map.body === body)?.mesh || this.createFloor(body);
                     tmpMap.push({body, mesh: floor});
                     this.add(floor);
                     break;
-                case world.MATERIALS.dice:
+                case WorldMaterials.dice:
                     const die = this.bodyMeshMap.find(map => map.body === body)?.mesh || this.createDie(body);
+                    die.position.copy(body.position as any)
                     tmpMap.push({body, mesh: die});
                     this.add(die);
                     break;
-                case world.MATERIALS.wall:
+                case WorldMaterials.wall:
                 default:
                     // no need to render walls
                     break;
@@ -88,9 +89,16 @@ export class DiceBoardScene extends Scene {
     }
 
     private createDie(body: Body): Mesh {
-        const geometry = new BoxGeometry();
-        const material = new MeshBasicMaterial({ color: 0x00FF00 });
-        const cube = new Mesh(geometry, material);
+        var geometry = new BoxGeometry();
+        var material = new MeshPhongMaterial( { color: 0x00ff00 } );
+        var cube = new Mesh( geometry, material );
+        cube.rotateY(2);
+        cube.rotateX(-0.8);
+        cube.position.copy(body.position as any)
+        cube.quaternion.copy(body.quaternion as any)
+        cube.scale.set(body.shapes[0].boundingSphereRadius, body.shapes[0].boundingSphereRadius, body.shapes[0].boundingSphereRadius)
+        cube.position.set(0, 0, 50)
+        cube.castShadow = true;
         return cube;
     }
 }

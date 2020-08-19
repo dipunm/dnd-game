@@ -10,7 +10,9 @@ export function useDiceBoardRenderer() {
 
     useEffect(() => {
         if (!rendererRef.current) {
-            rendererRef.current = new Renderer(new Camera(), new DiceBoardWorld(100, 100));;
+            const world = new DiceBoardWorld(100, 100);
+            rendererRef.current = new Renderer(new Camera(), world);
+            world.playDice('d6');
         }
 
         if (tmpContainerRef.current) {

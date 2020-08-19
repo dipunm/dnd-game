@@ -1,4 +1,4 @@
-import { Scene, Mesh, PlaneGeometry, MeshPhongMaterial, AmbientLight, SpotLight, BoxGeometry, MeshBasicMaterial, TextureLoader, Vector2 } from "three";
+import { Scene, Mesh, PlaneGeometry, MeshPhongMaterial, AmbientLight, SpotLight, BoxGeometry, MeshBasicMaterial, TextureLoader, Vector2, RepeatWrapping } from "three";
 import { DiceBoardWorld } from "./DiceBoardWorld";
 import { Body } from "cannon";
 
@@ -74,7 +74,9 @@ export class DiceBoardScene extends Scene {
     private createFloor(body: Body): Mesh {
         const geometry = new PlaneGeometry(10000, 10000, 1, 1);
         const map = new TextureLoader().load('/noisy-texture.png');
-        map.repeat = new Vector2(1, 1);
+        map.wrapS = RepeatWrapping;
+        map.wrapT = RepeatWrapping;
+        map.repeat = new Vector2(30, 30);
         const material = new MeshPhongMaterial({ 
             ...{ color: 0x40F0F4, shininess: 0, emissive: 0x222222 },
             // transparent: true,

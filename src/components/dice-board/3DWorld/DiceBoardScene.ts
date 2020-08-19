@@ -79,8 +79,6 @@ export class DiceBoardScene extends Scene {
         map.repeat = new Vector2(30, 30);
         const material = new MeshPhongMaterial({ 
             ...{ color: 0x40F0F4, shininess: 0, emissive: 0x222222 },
-            // transparent: true,
-            // opacity: 0.8,
             map,
         });
         const floor = new Mesh(geometry, material);

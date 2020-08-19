@@ -23,11 +23,11 @@ type PlayerPageProps = {
 };
 
 function PlayerPage({ user, logout }: PlayerPageProps) {
-  const dialog = useDialogState({ modal: true, visible: true });
+  const dialog = useDialogState({ modal: true, visible: false });
 
   return (
     <TabbedLayout 
-      tabLabels={[ 'Character Sheet', 'Chat', 'Dice' ]}
+      tabLabels={[ 'Dice', 'Character Sheet', 'Chat' ]}
       moreMenuContents={(menuProps) => (
         <>
           <NavLabel>You are logged in as <strong>{user?.username}</strong></NavLabel>
@@ -36,7 +36,7 @@ function PlayerPage({ user, logout }: PlayerPageProps) {
             Logout
           </DialogDisclosure>
           <DialogBackdrop {...dialog}>
-            <Dialog role="alertdialog" {...dialog}>
+            <Dialog role="alertdialog" aria-label="Confirm logout" {...dialog}>
               <p>Are you sure you want to logout?</p>
               <div style={{ display: 'grid', gridAutoFlow: 'column', gap: '20px' }}>
                 <Button primary onClick={logout}>Yes</Button>
@@ -48,16 +48,16 @@ function PlayerPage({ user, logout }: PlayerPageProps) {
       )}>
       {(tabProps) => (
         <>
+          <TabPanel {...tabProps} tabIndex={-1} style={{ flexGrow: 1 }}>
+            <DiceBoard />
+          </TabPanel>
+
           <TabPanel tabIndex={-1} {...tabProps} style={{ overflow: 'auto' }}>
             <CharacterSheet />
           </TabPanel>
     
           <TabPanel {...tabProps} tabIndex={-1} style={{ overflow: 'auto', flexGrow: 1 }}>
             <ChatComponent />
-          </TabPanel>
-    
-          <TabPanel {...tabProps} tabIndex={-1} style={{ flexGrow: 1 }}>
-            <DiceBoard />
           </TabPanel>
         </>
       )}

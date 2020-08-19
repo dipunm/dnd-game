@@ -20,9 +20,9 @@ export function TabbedLayout({ children, tabLabels, moreMenuContents }: TabbedLa
         <Template>
             <VerticalStack>
                 <NavBar>
-                    <TabList {...tab}>
+                    <TabList {...tab} aria-label="Menu">
                         {tabLabels.map(label => (
-                            <Tab {...tab}>{label}</Tab>
+                            <Tab key={label} {...tab}>{label}</Tab>
                         ))}
                     </TabList>
                     { moreMenuContents && ( 

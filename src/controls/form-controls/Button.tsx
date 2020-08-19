@@ -4,7 +4,9 @@ import styled from "styled-components";
 import colors from '../../constants/colors';
 
 const button = withFocusVisibleAttr(ReakitButton);
-export const Button = styled(button)<{primary?: boolean}>`
+export const Button = styled(button).withConfig({
+    shouldForwardProp: prop => !['primary'].includes(prop),
+})<{primary?: boolean}>`
     background: ${props => props.primary ? colors.primary : colors.primary_verylight};
     /*color: ${props => props.primary ? colors.white : colors.black};*/
     /*border: 2px solid ${props => props.primary ? colors.primary : colors.primary_washed};*/

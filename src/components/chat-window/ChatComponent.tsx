@@ -120,7 +120,7 @@ export function ChatComponent() {
         {
             if (myRef.current?.scrollHeight != null)
             {
-                console.log(myRef.current?.scrollHeight);
+                // console.log(myRef.current?.scrollHeight);
                 oldScrollHeightRef.current = myRef.current?.scrollHeight;
             }
         }

@@ -9,13 +9,13 @@ interface IFocusableComponentProps {
 }
 
 export function withFocusVisibleAttr<TProps>(Component:  React.ComponentType<TProps & IFocusableComponentProps>) { 
-    return (props: TProps) =>  {
+    return React.forwardRef((props: TProps, forwardedRef) =>  {
         const { onBlur, onFocus, focusVisible } = useFocusVisible();
         return (
-            <Component {...props} focus-visible={focusVisible ? 'true' : 'false'}
+            <Component ref={forwardedRef} {...props} focus-visible={focusVisible ? 'true' : 'false'}
                 onBlur={onBlur} onFocus={onFocus} />
         );
-    }
+    });
 }
 
 export const defaultFocusStyle = css`

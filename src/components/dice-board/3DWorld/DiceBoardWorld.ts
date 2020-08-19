@@ -26,6 +26,8 @@ export class DiceBoardWorld extends World {
         this.addContactMaterial(new ContactMaterial(this.MATERIALS.floor, this.MATERIALS.dice, { friction: 0.01, restitution: 0.5 }));
         this.addContactMaterial(new ContactMaterial(this.MATERIALS.wall, this.MATERIALS.dice, { friction: 0, restitution: 1.0 }));
         this.addContactMaterial(new ContactMaterial(this.MATERIALS.dice, this.MATERIALS.dice, { friction: 0, restitution: 0.5 }));
+        
+        this.scene.illustrate(this);
     }
 
     clear() {

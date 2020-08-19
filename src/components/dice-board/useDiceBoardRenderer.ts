@@ -31,7 +31,7 @@ export function useDiceBoardRenderer() {
             // save for later when the effect runs.
             tmpContainerRef.current = container;
         }
-    }, [rendererRef.current]);
+    }, []);
 
     return containerCallbackRef;
 }

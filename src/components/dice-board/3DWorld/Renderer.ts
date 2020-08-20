@@ -11,6 +11,8 @@ class CustomisedRenderer extends WebGLRenderer {
     }
 }
 
+const isVisible = (elem: HTMLElement) => !!( elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length );
+
 export class Renderer {
     camera: Camera;
     world: DiceBoardWorld;
@@ -61,7 +63,10 @@ export class Renderer {
             }
             lastTime = time;
             
-            if (this.containerEl!.clientWidth * this.containerEl!.clientHeight === 0) {
+            if (
+                !isVisible(this.containerEl!) ||
+                this.containerEl!.clientWidth * this.containerEl!.clientHeight === 0
+            ) {
                 // skip rendering.
                 return;
             }
@@ -73,9 +78,11 @@ export class Renderer {
                 this.adjustForContainer();
             }
 
-            this.render();
+            if (!this.world.scene.untouched) {
+                this.render();
+                this.world.scene.resetChangeTracker();
+            }
         }
-
         this.animation = requestAnimationFrame(animate);
     }
 

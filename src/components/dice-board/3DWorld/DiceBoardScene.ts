@@ -6,19 +6,12 @@ const ambient_light_color = 0xf0f5fb;
 const spot_light_color = 0xefdfd5;
 
 export class DiceBoardScene extends Scene {
+
+    untouched: boolean;
+
     constructor(world: DiceBoardWorld) {
         super();
-
-        // var geometry = new BoxGeometry();
-        // var material = new MeshPhongMaterial( { color: 0x00ff00 } );
-        // var cube = new Mesh( geometry, material );
-        // cube.rotateY(2);
-        // cube.rotateX(-0.8);
-        // cube.position.set(0, 0, 50)
-        // cube.scale.set(100, 100, 100);
-        // cube.castShadow = true;
-        // this.add( cube );
-
+        this.untouched = false; // should render at least once.
         const { ambientlight, spotlight } = this.createLighting();
         this.add(ambientlight);
         this.add(spotlight);
@@ -38,7 +31,14 @@ export class DiceBoardScene extends Scene {
                     break;
                 case WorldMaterials.dice:
                     const die = this.bodyMeshMap.find(map => map.body === body)?.mesh || this.createDie(body);
-                    die.position.copy(body.position as any)
+                    if (
+                        Math.abs(die.position.distanceTo(body.position as any)) > 1 ||
+                        Math.abs(die.quaternion.angleTo(body.quaternion as any)) > 1
+                    ) {
+                        this.trackChange();
+                        die.position.copy(body.position as any);
+                        die.quaternion.copy(body.quaternion as any);
+                    }
                     tmpMap.push({body, mesh: die});
                     this.add(die);
                     break;
@@ -51,7 +51,16 @@ export class DiceBoardScene extends Scene {
         this.bodyMeshMap = tmpMap;
     }
 
+    resetChangeTracker() {
+        this.untouched = true;
+    }
+
+    private trackChange() {
+        this.untouched = false;
+    }
+
     private createLighting() {
+        this.trackChange();
         const ambientlight = new AmbientLight(ambient_light_color, 0.3);
         const spotlight = new SpotLight(spot_light_color, ...Object.values({
             intensity: 0.8,
@@ -73,8 +82,9 @@ export class DiceBoardScene extends Scene {
     }
 
     private createFloor(body: Body): Mesh {
+        this.trackChange();
         const geometry = new PlaneGeometry(10000, 10000, 1, 1);
-        const map = new TextureLoader().load('/noisy-texture.png');
+        const map = new TextureLoader().load('/noisy-texture.png', () => this.trackChange());
         map.wrapS = RepeatWrapping;
         map.wrapT = RepeatWrapping;
         map.repeat = new Vector2(30, 30);
@@ -89,6 +99,7 @@ export class DiceBoardScene extends Scene {
     }
 
     private createDie(body: Body): Mesh {
+        this.trackChange();
         var geometry = new BoxGeometry();
         var material = new MeshPhongMaterial( { color: 0x00ff00 } );
         var cube = new Mesh( geometry, material );

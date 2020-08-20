@@ -92,10 +92,12 @@ export class Renderer {
     }
 
     private adjustForContainer() {
-        const aspect = this.containerEl!.clientWidth / this.containerEl!.clientHeight;
+        const [width, height] = [this.containerEl!.clientWidth, this.containerEl!.clientHeight];
+        const aspect = width / height;
         this.camera.aspect = aspect;
-        this.renderer.setSize(this.containerEl!.clientWidth, this.containerEl!.clientHeight);
+        this.camera.zoom = Math.min(aspect, 1);
         this.camera.updateProjectionMatrix();
+        this.renderer.setSize(width, height, false);
     }
 
     private render() {

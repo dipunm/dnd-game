@@ -9,6 +9,7 @@ export class DiceBoardScene extends Scene {
 
     untouched: boolean;
 
+    private hideWalls = true;
     constructor(world: DiceBoardWorld) {
         super();
         this.untouched = false; // should render at least once.
@@ -43,8 +44,14 @@ export class DiceBoardScene extends Scene {
                     this.add(die);
                     break;
                 case WorldMaterials.wall:
+                    if (!this.hideWalls) {
+                        const wall = this.bodyMeshMap.find(map => map.body === body)?.mesh || this.createWall(body);
+                        tmpMap.push({body, mesh: wall});
+                        this.add(wall);
+                    }
+                    break;
                 default:
-                    // no need to render walls
+                    console.warn('Unknown cannon body found. Cannot create a mesh to render.')
                     break;
             }
         });
@@ -91,6 +98,18 @@ export class DiceBoardScene extends Scene {
         floor.position.set(body.position.x, body.position.y, body.position.z);
         floor.receiveShadow = true;
         return floor;
+    }
+
+    private createWall(body: Body): Mesh {
+        this.trackChange();
+        const geometry = new PlaneGeometry(10000, 10000, 1, 1);
+        const material = new MeshPhongMaterial({ 
+            ...{ color: 0x40F0F4, shininess: 0, emissive: 0x222222 },
+        });
+        const wall = new Mesh(geometry, material);
+        wall.position.copy(body.position as any);
+        wall.quaternion.copy(body.quaternion as any);
+        return wall;
     }
 
     private createDie(body: Body): Mesh {

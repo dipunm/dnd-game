@@ -18,7 +18,7 @@ export class DiceBoardWorld extends World {
         this.scene = new DiceBoardScene(this);
         this.dice = [];
 
-        const viewingRadius = Math.abs(Math.tan((camera.fov / 2) * (Math.PI / 180)) * camera.position.z) - 150;
+        const viewingRadius = Math.abs(Math.tan((camera.fov / 2) * (Math.PI / 180)) * camera.position.z);
         this.gravity.set(0, 0, -this.GRAVITY * 300);
         this.broadphase = new NaiveBroadphase();
         this.solver.iterations = 50;

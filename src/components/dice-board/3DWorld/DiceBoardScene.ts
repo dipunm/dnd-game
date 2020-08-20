@@ -1,6 +1,7 @@
-import { Scene, Mesh, PlaneGeometry, MeshPhongMaterial, AmbientLight, SpotLight, BoxGeometry, TextureLoader, Vector2, RepeatWrapping } from "three";
+import { Scene, Mesh, PlaneGeometry, MeshPhongMaterial, AmbientLight, SpotLight, TextureLoader, Vector2, RepeatWrapping } from "three";
 import { DiceBoardWorld, WorldMaterials } from "./DiceBoardWorld";
 import { Body } from "cannon";
+import { DieFactory } from "./DieFactory";
 
 const ambient_light_color = 0xf0f5fb;
 const spot_light_color = 0xefdfd5;
@@ -13,9 +14,9 @@ export class DiceBoardScene extends Scene {
     constructor(world: DiceBoardWorld) {
         super();
         this.untouched = false; // should render at least once.
-        const { ambientlight, spotlight } = this.createLighting();
+        const [ ambientlight, ...spotlights ] = this.createLighting();
         this.add(ambientlight);
-        this.add(spotlight);
+        this.add(...spotlights);
         this.illustrate(world);
     }
 
@@ -68,19 +69,42 @@ export class DiceBoardScene extends Scene {
 
     private createLighting() {
         this.trackChange();
-        const ambientlight = new AmbientLight(ambient_light_color, 0.3);
+        const ambientlight = new AmbientLight(ambient_light_color, 0.5);
         const spotlight = new SpotLight(spot_light_color, ...Object.values({
-            intensity: 0.8,
-            distance: 5000,
-            angle: 90,
+            intensity: 0.2,
+            distance: 12000,
+            angle: Math.PI/2 * 0.95,
+            penumbra: 0.5,
+            decay: 0
         }));
-        spotlight.position.set(300, 300, 900);
+        spotlight.position.set(0,0, 900);
         spotlight.target.position.set(0, 0, 0);
         spotlight.castShadow = true;
         spotlight.shadow.mapSize.width = 4096;
         spotlight.shadow.mapSize.height = 4096;
 
-        return { ambientlight, spotlight };
+        const spotlight1 = spotlight.clone();
+        spotlight1.position.set(3000, 3000, 1500);
+        
+        const spotlight2 = spotlight.clone();
+        spotlight2.position.set(-3000, -3000, 1500);
+
+        const spotlight3 = spotlight.clone();
+        spotlight3.position.set(3000, -3000, 1500);
+
+        const spotlight4 = spotlight.clone();
+        spotlight4.position.set(-3000, 3000, 1500);
+        
+        spotlight.intensity = 1
+        spotlight.penumbra = 1
+        return [ 
+            ambientlight,
+            spotlight, 
+            spotlight1, 
+            spotlight2,
+            spotlight3,
+            spotlight4,
+        ];
     }
 
     private createFloor(body: Body): Mesh {
@@ -114,15 +138,17 @@ export class DiceBoardScene extends Scene {
 
     private createDie(body: Body): Mesh {
         this.trackChange();
-        var geometry = new BoxGeometry();
-        var material = new MeshPhongMaterial( { color: 0x00ff00 } );
-        var cube = new Mesh( geometry, material );
+        // console.log('faces:::', (body.shapes[0] as ConvexPolyhedron).faces.length)
+        // var geometry = new BoxGeometry();
+        // var material = new MeshPhongMaterial( { color: 0x00ff00 } );
+        // var cube = new Mesh( geometry, material );
+        const cube = DieFactory.createDieMesh(body);
         cube.position.copy(body.position as any)
         cube.quaternion.copy(body.quaternion as any)
         // console.log(body.shapes[0].boundingSphereRadius);
         // const scale = Math.floor(body.shapes[0].boundingSphereRadius);
-        const scale = 200;
-        cube.scale.set(scale, scale, scale)
+        // const scale = 200;
+        // cube.scale.set(scale, scale, scale)
         cube.castShadow = true;
         return cube;
     }

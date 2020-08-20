@@ -1,5 +1,5 @@
 import { Body, ConvexPolyhedron, Material, Vec3 } from "cannon";
-import { Mesh } from "three";
+import { Mesh, Geometry, MeshPhongMaterial, Vector3, Face3 } from "three";
 
 export const DieMaterial = new Material("die");
 
@@ -35,7 +35,52 @@ export const DieFactory = new (class {
 
     createDieMesh(die: Body): Mesh {
         // const sides = (die.shapes[0] as ConvexPolyhedron)?.faces?.length || 0;
-        return new Mesh();
-    }
+        const shape = die.shapes[0] as ConvexPolyhedron;
+        const sides = shape.faces.length;
+
+ 
+        switch(sides) {
+            case 7:
+                {
+                    const geom = new Geometry();
+                    const material = new MeshPhongMaterial( { color: 0x00ff00 } );
+                    const { vertices, scale } = config.d6;
+                    geom.vertices.push(...vertices.map(v => {
+                        const vert = new Vector3(...v).multiplyScalar(scale);
+                        // vert.index = i
+                        return vert;
+                    }));
+                    return new Mesh(geom, material);
+                }
+            case 6:
+                {
+                    const geom = new Geometry();
+                    const material = new MeshPhongMaterial( { color: 0x2B1B2B } );
+
+                    // Add vertices
+                    for (let i = 0; i < shape.vertices.length; i++) {
+                        const v = shape.vertices[i];
+                        geom.vertices.push(new Vector3(v.x, v.y, v.z));
+                    }
+            
+                    for(let i=0; i < shape.faces.length; i++){
+                        const face = shape.faces[i];
+            
+                        // add triangles
+                        const a = face[0];
+                        for (var j = 1; j < face.length - 1; j++) {
+                            const b = face[j];
+                            const c = face[j + 1];
+                            geom.faces.push(new Face3(a, b, c));
+                        }
+                    }
+                    geom.computeBoundingSphere();
+                    geom.computeFaceNormals();
+                    return new Mesh(geom, material);
+                }
+            default:
+                throw new Error(`Unknown dice with ${sides} sides.`);
+        }
+     }
 
 })();

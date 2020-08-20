@@ -89,7 +89,7 @@ export class DiceBoardScene extends Scene {
         const map = new TextureLoader().load('/noisy-texture.png', () => this.trackChange());
         map.wrapS = RepeatWrapping;
         map.wrapT = RepeatWrapping;
-        map.repeat = new Vector2(3, 3);
+        map.repeat = new Vector2(5, 5);
         const material = new MeshPhongMaterial({ 
             ...{ color: 0x40F0F4, shininess: 0, emissive: 0x222222 },
             map,

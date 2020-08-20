@@ -1,6 +1,7 @@
 import { World, NaiveBroadphase, ContactMaterial, Material, Body, Plane, Vec3 } from "cannon";
 import { DiceBoardScene } from "./DiceBoardScene";
 import { DieMaterial, DieFactory } from "./DieFactory";
+import { Camera } from "./Camera";
 
 export const WorldMaterials = {
     floor: new Material('floor'),
@@ -12,17 +13,18 @@ export class DiceBoardWorld extends World {
 
     readonly scene: DiceBoardScene;
     private dice: Body[];
-    constructor(width: number, height: number) {
+    constructor(camera: Camera) {
         super();
         this.scene = new DiceBoardScene(this);
         this.dice = [];
 
-        this.gravity.set(0, 0, -this.GRAVITY * 700);
+        const viewingRadius = Math.abs(Math.tan((camera.fov / 2) * (Math.PI / 180)) * camera.position.z) - 150;
+        this.gravity.set(0, 0, -this.GRAVITY * 300);
         this.broadphase = new NaiveBroadphase();
         this.solver.iterations = 50;
 
         this.addBody(this.createFloor());
-        this.createWalls(width, height).map(wall => this.addBody(wall));
+        this.createWalls(viewingRadius * 2, viewingRadius * 2).map(wall => this.addBody(wall));
 
         this.addContactMaterial(new ContactMaterial(WorldMaterials.floor, WorldMaterials.dice, { friction: 0.01, restitution: 0.5 }));
         this.addContactMaterial(new ContactMaterial(WorldMaterials.wall, WorldMaterials.dice, { friction: 0, restitution: 1.0 }));
@@ -32,7 +34,8 @@ export class DiceBoardWorld extends World {
     }
 
     private createFloor(): Body {
-        return new Body({ mass: 0, shape: new Plane(), material: WorldMaterials.floor });
+        const floor = new Body({ mass: 0, shape: new Plane(), material: WorldMaterials.floor });
+        return floor;
     }
 
     private createWalls(width: number, height: number): Body[] {
@@ -60,7 +63,9 @@ export class DiceBoardWorld extends World {
             ...diceCodes.map(code => {
                 const die = DieFactory.buildDie(code);
                 die.position.z = 900;
-                die.force.set(1000, 1000, 100)
+                die.velocity.set(3990, 4000, 0);
+                // die.angularVelocity.set(100,19,9);
+
                 return die;
             }));
 

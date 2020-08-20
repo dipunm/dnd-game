@@ -65,19 +65,14 @@ export class DiceBoardScene extends Scene {
         const spotlight = new SpotLight(spot_light_color, ...Object.values({
             intensity: 0.8,
             distance: 5000,
-            angle: 10,
+            angle: 90,
         }));
-        spotlight.position.set(100, 100, 500);
+        spotlight.position.set(300, 300, 900);
         spotlight.target.position.set(0, 0, 0);
         spotlight.castShadow = true;
         spotlight.shadow.mapSize.width = 4096;
         spotlight.shadow.mapSize.height = 4096;
-        // spotlight.shadow.camera.near = 200;
-        // spotlight.shadow.camera.far = 10000 * 5;
-        // spotlight.shadow.camera.fov = 70;
-        // spotlight.shadow.bias = 0.001;
-        // spotlight.shadow.mapSize.width = 1024;
-        // spotlight.shadow.mapSize.height = 1024;
+
         return { ambientlight, spotlight };
     }
 
@@ -87,7 +82,7 @@ export class DiceBoardScene extends Scene {
         const map = new TextureLoader().load('/noisy-texture.png', () => this.trackChange());
         map.wrapS = RepeatWrapping;
         map.wrapT = RepeatWrapping;
-        map.repeat = new Vector2(30, 30);
+        map.repeat = new Vector2(3, 3);
         const material = new MeshPhongMaterial({ 
             ...{ color: 0x40F0F4, shininess: 0, emissive: 0x222222 },
             map,
@@ -103,12 +98,12 @@ export class DiceBoardScene extends Scene {
         var geometry = new BoxGeometry();
         var material = new MeshPhongMaterial( { color: 0x00ff00 } );
         var cube = new Mesh( geometry, material );
-        cube.rotateY(2);
-        cube.rotateX(-0.8);
         cube.position.copy(body.position as any)
         cube.quaternion.copy(body.quaternion as any)
-        cube.scale.set(body.shapes[0].boundingSphereRadius, body.shapes[0].boundingSphereRadius, body.shapes[0].boundingSphereRadius)
-        cube.position.set(0, 0, 50)
+        // console.log(body.shapes[0].boundingSphereRadius);
+        // const scale = Math.floor(body.shapes[0].boundingSphereRadius);
+        const scale = 200;
+        cube.scale.set(scale, scale, scale)
         cube.castShadow = true;
         return cube;
     }

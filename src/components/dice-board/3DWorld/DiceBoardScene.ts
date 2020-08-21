@@ -3,7 +3,7 @@ import { DiceBoardWorld, WorldMaterials } from "./DiceBoardWorld";
 import { Body } from "cannon";
 import { DieFactory } from "./DieFactory";
 
-const ambient_light_color = 0xf0f5fb;
+const ambient_light_color = 0xfef5fb;
 const spot_light_color = 0xefdfd5;
 
 export class DiceBoardScene extends Scene {
@@ -69,7 +69,7 @@ export class DiceBoardScene extends Scene {
 
     private createLighting() {
         this.trackChange();
-        const ambientlight = new AmbientLight(ambient_light_color, 0.5);
+        const ambientlight = new AmbientLight(ambient_light_color, 0.8);
         const spotlight = new SpotLight(spot_light_color, ...Object.values({
             intensity: 0.2,
             distance: 12000,
@@ -96,7 +96,8 @@ export class DiceBoardScene extends Scene {
         spotlight4.position.set(-3000, 3000, 1500);
         
         spotlight.intensity = 1
-        spotlight.penumbra = 1
+        spotlight.penumbra = 0.5
+        spotlight.decay = 1;
         return [ 
             ambientlight,
             spotlight, 
@@ -138,17 +139,9 @@ export class DiceBoardScene extends Scene {
 
     private createDie(body: Body): Mesh {
         this.trackChange();
-        // console.log('faces:::', (body.shapes[0] as ConvexPolyhedron).faces.length)
-        // var geometry = new BoxGeometry();
-        // var material = new MeshPhongMaterial( { color: 0x00ff00 } );
-        // var cube = new Mesh( geometry, material );
         const cube = DieFactory.createDieMesh(body);
         cube.position.copy(body.position as any)
         cube.quaternion.copy(body.quaternion as any)
-        // console.log(body.shapes[0].boundingSphereRadius);
-        // const scale = Math.floor(body.shapes[0].boundingSphereRadius);
-        // const scale = 200;
-        // cube.scale.set(scale, scale, scale)
         cube.castShadow = true;
         return cube;
     }

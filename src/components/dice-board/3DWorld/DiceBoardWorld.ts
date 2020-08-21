@@ -8,6 +8,7 @@ export const WorldMaterials = {
     wall: new Material('wall'),
     dice: DieMaterial,
 }
+
 export class DiceBoardWorld extends World {
     readonly GRAVITY = 9.8;
 

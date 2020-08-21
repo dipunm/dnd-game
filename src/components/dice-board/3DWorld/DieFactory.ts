@@ -1,5 +1,5 @@
 import { Body, ConvexPolyhedron, Material, Vec3 } from "cannon";
-import { Mesh, Geometry, MeshPhongMaterial, Vector3, Face3, DoubleSide } from "three";
+import { Mesh, Geometry, MeshPhongMaterial, Vector3, Face3 } from "three";
 
 export const DieMaterial = new Material("die");
 
@@ -34,7 +34,6 @@ export const DieFactory = new (class {
     }
 
     createDieMesh(die: Body): Mesh {
-        // const sides = (die.shapes[0] as ConvexPolyhedron)?.faces?.length || 0;
         const shape = die.shapes[0] as ConvexPolyhedron;
         const sides = shape.faces.length;
 
@@ -44,7 +43,6 @@ export const DieFactory = new (class {
                 {
                     const material = new MeshPhongMaterial( { color: 0x2B1B2B } );
                     const geom = this.createChamferredGeometry(shape, 0.85);
-                    material.side = DoubleSide;
                     geom.computeBoundingSphere();
                     geom.computeFaceNormals();
                     return new Mesh(geom, material);
@@ -64,7 +62,7 @@ export const DieFactory = new (class {
                 return face.map(point => new Vector3().copy(shape.vertices[point] as any));
             });
         
-        const cornerFaces = Object.values(faces.flat()
+        const corners = Object.values(faces.flat()
             .reduce(function groupDuplicateVerticies(map, vertex) {
                 const key = `${vertex.x}, ${vertex.y}, ${vertex.z}`;
                 return {
@@ -111,7 +109,10 @@ export const DieFactory = new (class {
 
         // Edge faces should be reversed because they are in anticlockwise order.
         const edgeFaces = pairedEdges.map(pair => [...pair[0], ...pair[1]].reverse());
-
+        
+        // Corner faces are unpredictable so we make them double sided.
+        const cornerFaces = [...corners, ...corners.map(face => [...face].reverse())];
+        
         const allFaces = [
             // keep dice faces first to ensure 
             // dice labels are applied correctly.

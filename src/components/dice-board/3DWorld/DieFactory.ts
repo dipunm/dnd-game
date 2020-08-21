@@ -42,28 +42,8 @@ export const DieFactory = new (class {
         switch(sides) {
             case 6:
                 {
-                    // const geom = new Geometry();
                     const material = new MeshPhongMaterial( { color: 0x2B1B2B } );
-
-                    // // Add vertices
-                    // for (let i = 0; i < shape.vertices.length; i++) {
-                    //     const v = shape.vertices[i];
-                    //     geom.vertices.push(new Vector3(v.x, v.y, v.z));
-                    // }
-            
-                    // for(let i=0; i < shape.faces.length; i++){
-                    //     const face = shape.faces[i];
-            
-                    //     // add triangles
-                    //     const a = face[0];
-                    //     for (var j = 1; j < face.length - 1; j++) {
-                    //         const b = face[j];
-                    //         const c = face[j + 1];
-                    //         geom.faces.push(new Face3(a, b, c));
-                    //     }
-                    // }
-
-                    const geom = this.createChamferredGeometry(shape, 0.7);
+                    const geom = this.createChamferredGeometry(shape, 0.85);
                     material.side = DoubleSide;
                     geom.computeBoundingSphere();
                     geom.computeFaceNormals();
@@ -146,108 +126,17 @@ export const DieFactory = new (class {
                 return self.indexOf(v) === i; 
             }));
 
-        geometry.faces.push(...allFaces.map(face => new Face3(
-            ...(face.map(vertex => geometry.vertices.indexOf(vertex)) as [number, number, number])
-        )));
+        geometry.faces.push(
+            ...allFaces.map(face => 
+                face.map(vertex => geometry.vertices.indexOf(vertex))
+            )
+            .reduce(function toTriangles(faces, surface){
+                return [...faces, ...surface.reduce((agg, _, i) => (
+                    i + 2 < surface.length) ? 
+                        [...agg, new Face3(surface[0], surface[i + 1], surface[i + 2])] :
+                        agg, [] as Face3[])];
+            }, [] as Face3[]));
 
         return geometry;
     }
-
-    /**
-     * Chamfer: Cuts off the edges of a 3d shape without rounding 
-     */
-    chamferGeometry(vectors: Vector3[], faces: number[][], chamfer: number) {
-        const newVectors = [], newFaces = [], cornerFaces = new Array(vectors.length).map<number[]>(() => []);
-
-
-        
-
-
-            for (let i = 0; i < faces.length; ++i) {
-                // foreach face:
-                let face = faces[i]; 
-                // drop face identifier (see below)
-                let nFacePoints = face.length - 1;
-                let center_point = new Vector3();
-                // create a duplicate new_face:
-                let newFace = new Array(nFacePoints);
-                for (let facePointIndex = 0; facePointIndex < nFacePoints; ++facePointIndex) {
-                    // and each of its point
-                    const point = face[facePointIndex];
-
-                    // copy its points' vectors to newVectors
-                    let vector = vectors[point].clone();
-                    const vectorIndex = newVectors.push(vector) - 1;
-                    // and record its index in the newFace
-                    newFace[facePointIndex] = vectorIndex;
-                    
-                    // and every point will become a face, so store 
-                    // that vector in a new cornerFaces collection
-                    cornerFaces[point].push(vectorIndex);
-
-                    center_point.add(vector);
-                }
-
-                // calculate avg. center of face
-                center_point.divideScalar(nFacePoints);
-
-                // shrink face anchored about its center (point by point).
-                for (let j = 0; j < nFacePoints; ++j) {
-                    let newFaceVector = newVectors[newFace[j]];
-                    newFaceVector.subVectors(newFaceVector, center_point).multiplyScalar(chamfer).addVectors(newFaceVector, center_point);
-                }
-
-                // add back the face identifier (see above)
-                newFace.push(face[nFacePoints]);
-                // add to newFaces collection.
-                newFaces.push(newFace);
-            }
-
-            // Add connecting faces between shrunk main faces.
-            for (let i = 0; i < faces.length - 1; ++i) {
-                for (let j = i + 1; j < faces.length; ++j) {
-                    let pairs = [], lastm = -1;
-                    for (let m = 0; m < faces[i].length - 1; ++m) {
-                        let n = faces[j].indexOf(faces[i][m]);
-                        if (n >= 0 && n < faces[j].length - 1) {
-                            if (lastm >= 0 && m !== lastm + 1) pairs.unshift([i, m], [j, n]);
-                            else pairs.push([i, m], [j, n]);
-                            lastm = m;
-                        }
-                    }
-                    if (pairs.length !== 4) continue;
-                    newFaces.push([newFaces[pairs[0][0]][pairs[0][1]],
-                        newFaces[pairs[1][0]][pairs[1][1]],
-                        newFaces[pairs[3][0]][pairs[3][1]],
-                        newFaces[pairs[2][0]][pairs[2][1]], 
-                        
-                        -1]); // add a non-face identifier to connecting face
-                }
-            }
-
-            // create faces that connect the corners.
-            for (let i = 0; i < cornerFaces.length; ++i) {
-            let cf = cornerFaces[i], face = [cf[0]], count = cf.length - 1;
-            while (count) {
-                for (let m = faces.length; m < newFaces.length; ++m) {
-                    let index = newFaces[m].indexOf(face[face.length - 1]);
-                    if (index >= 0 && index < 4) {
-                        if (--index === -1) index = 3;
-                        let next_vertex = newFaces[m][index];
-                        if (cf.indexOf(next_vertex) >= 0) {
-                            face.push(next_vertex);
-                            break;
-                        }
-                    }
-                }
-                --count;
-            }
-
-            // add a non-face identifier to corners
-            face.push(-1);
-            newFaces.push(face);
-        }
-        return { vectors: newVectors, faces: newFaces };
-     }
-
 })();

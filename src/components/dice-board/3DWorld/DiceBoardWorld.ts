@@ -10,7 +10,7 @@ export const WorldMaterials = {
 }
 
 export class DiceBoardWorld extends World {
-    readonly GRAVITY = 9.8;
+    readonly GRAVITY = 9.8 * 400;
 
     readonly scene: DiceBoardScene;
     private dice: Body[];
@@ -20,7 +20,7 @@ export class DiceBoardWorld extends World {
         this.dice = [];
 
         const viewingRadius = Math.abs(Math.tan((camera.fov / 2) * (Math.PI / 180)) * camera.position.z) -50;
-        this.gravity.set(0, 0, -this.GRAVITY * 300);
+        this.gravity.set(0, 0, -this.GRAVITY);
         this.broadphase = new NaiveBroadphase();
         this.solver.iterations = 50;
 

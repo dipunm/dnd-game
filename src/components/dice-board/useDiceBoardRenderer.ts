@@ -13,7 +13,7 @@ export function useDiceBoardRenderer() {
             const camera = new Camera();
             const world = new DiceBoardWorld(camera);
             rendererRef.current = new Renderer(camera, world);
-            world.playDice('d6');
+            world.playDice('d6', 'd8');
         }
 
         if (tmpContainerRef.current) {

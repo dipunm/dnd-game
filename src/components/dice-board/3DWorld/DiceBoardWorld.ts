@@ -10,7 +10,7 @@ export const WorldMaterials = {
 }
 
 export class DiceBoardWorld extends World {
-    readonly GRAVITY = 9.8 * 400;
+    readonly GRAVITY = 9.8 * 500;
 
     readonly scene: DiceBoardScene;
     private dice: Body[];
@@ -64,8 +64,9 @@ export class DiceBoardWorld extends World {
             ...diceCodes.map(code => {
                 const die = DieFactory.buildDie(code);
                 die.position.z = 900;
-                die.velocity.set(3990, 4000, 0);
-                die.angularVelocity.set(10,1,9);
+
+                die.velocity.set(3990, 9000, 0);
+                die.angularVelocity.set(9,14,10);
 
                 return die;
             }));
@@ -73,6 +74,8 @@ export class DiceBoardWorld extends World {
         this.dice.forEach(die => this.addBody(die));
         this.scene.illustrate(this);
     }
+
+    private n = 0;
 
     step(dy: number, timeSinceLastCalled?: number, maxSubSteps?: number) {
         super.step(dy, timeSinceLastCalled, maxSubSteps);

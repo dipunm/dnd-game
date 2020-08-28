@@ -20,12 +20,12 @@ export function createChamferredGeometry(shape: ConvexPolyhedron, scale: number)
             };
         }, {} as {[key: string]: Vector3[]}));
 
-    const pairedEdges = Object.values(
+    const edges = Object.values(
         faces.map(face => face.reduce((agg, vertex, i) =>
-            [...agg, (face.length > i + 1) ? [vertex, face[i + 1]]: [vertex, face[0]]], 
+            [...agg, [vertex, face[(i + 1) % face.length]]], 
             [] as Vector3[][]))
         .flat()
-        .reduce(function groupDuplicatePairs(map, edge) {
+        .reduce(function groupDuplicateEdges(map, edge) {
             const key = [...edge].sort((v1, v2) => {
                 const dx = v1.x - v2.x;
                 if (dx !== 0) return dx;
@@ -35,8 +35,8 @@ export function createChamferredGeometry(shape: ConvexPolyhedron, scale: number)
 
                 return v1.z - v2.z;
             })
-            .map(vertex => `${vertex.x}, ${vertex.y}, ${vertex.z}`)
-            .join(', ');
+            .map(vertex => `${vertex.x.toFixed(5)}, ${vertex.y.toFixed(5)}, ${vertex.z.toFixed(5)}`)
+            .join(' -> ');
 
             return {
                 ...map,
@@ -57,7 +57,7 @@ export function createChamferredGeometry(shape: ConvexPolyhedron, scale: number)
     }, [] as Vector3[][])
 
     // Edge faces should be reversed because they are in anticlockwise order.
-    const edgeFaces = pairedEdges.map(pair => [...pair[0], ...pair[1]].reverse());
+    const edgeFaces = edges.map(pair => [...pair[0], ...pair[1]].reverse());
     
     // Corner faces are unpredictable so we make them double sided.
     const cornerFaces = [...corners, ...corners.map(face => [...face].reverse())];

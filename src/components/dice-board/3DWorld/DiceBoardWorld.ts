@@ -28,7 +28,7 @@ export class DiceBoardWorld extends World {
         this.createWalls(viewingRadius * 2, viewingRadius * 2).map(wall => this.addBody(wall));
 
         this.addContactMaterial(new ContactMaterial(WorldMaterials.floor, WorldMaterials.dice, { friction: 0.01, restitution: 0.5 }));
-        this.addContactMaterial(new ContactMaterial(WorldMaterials.wall, WorldMaterials.dice, { friction: 0, restitution: 1.0 }));
+        this.addContactMaterial(new ContactMaterial(WorldMaterials.wall, WorldMaterials.dice, { friction: 0, restitution: 0.96 }));
         this.addContactMaterial(new ContactMaterial(WorldMaterials.dice, WorldMaterials.dice, { friction: 0, restitution: 0.5 }));
         
         this.scene.illustrate(this);
@@ -66,8 +66,8 @@ export class DiceBoardWorld extends World {
                 die.position.z = 900;
                 die.position.x = -800;
 
-                die.velocity.set(3990, 9000, 0);
-                die.angularVelocity.set(9,14,10);
+                die.velocity.set(2000, 5000, 0);
+                die.angularVelocity.set(4, die.mass / 100, 0.3);
 
                 return die;
             }));

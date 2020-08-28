@@ -65,6 +65,8 @@ export const dieConfig: DieConfig  = {
         texture: {
             rotate: Math.PI,
             offset: [0.05,-0.25],
+            // Since this die is not regular, it 
+            // needs to be scaled disproportionately
             scale: [0.90, 0.50],
         }
     },

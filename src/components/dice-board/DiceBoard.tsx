@@ -17,7 +17,6 @@ export const DiceBoard = () => {
     const containerRef = useDiceBoardRenderer();
     return (
     <Container>
-        This will host the dice.
         <div ref={containerRef} dangerouslySetInnerHTML={HTML_EMPTY} />
     </Container>
     );

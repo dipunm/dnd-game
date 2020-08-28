@@ -1,7 +1,7 @@
 import { MeshPhongMaterial, CanvasTexture } from "three";
 
-const dieColor = '#aaaaaa';
-const labelColor = '#202020';
+const dieColor = '#123';
+const labelColor = '#FFF';
 
 function createCanvas(label: string, textSize: number, margin: number) {
     const canvas = document.createElement('canvas');
@@ -35,8 +35,8 @@ export function createDieMaterials(faceLabels: string[], size: number, margin: n
         })
         .map(texture => new MeshPhongMaterial({
             specular: 0x172022,
-            color: 0xf0f0f0,
-            shininess: 40,
+            color: 0xfafafa,
+            shininess: 60,
             flatShading: true,
             map: texture,
         }));

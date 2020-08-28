@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/three": "^0.103.2",
     "autobind-decorator": "^2.4.0",
     "cannon": "^0.6.2",
     "color": "^3.1.2",
@@ -23,7 +24,7 @@
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",
     "styled-components": "^5.1.0",
-    "three": "^0.116.1",
+    "three": "^0.119.1",
     "ts-node": "^8.10.1",
     "typescript": "^3.8.3",
     "use-focus-visible": "^1.0.0",

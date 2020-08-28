@@ -64,6 +64,7 @@ export class DiceBoardWorld extends World {
             ...diceCodes.map(code => {
                 const die = DieFactory.buildDie(code);
                 die.position.z = 900;
+                die.position.x = -800;
 
                 die.velocity.set(3990, 9000, 0);
                 die.angularVelocity.set(9,14,10);

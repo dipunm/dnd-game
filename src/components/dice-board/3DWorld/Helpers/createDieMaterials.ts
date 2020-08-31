@@ -23,11 +23,17 @@ function createCanvas(label: string, textSize: number, margin: number) {
     return canvas;
 }
 
-export function createDieMaterials(faceLabels: string[], size: number, margin: number) {
-    return faceLabels
+export function createDieMaterials(faceLabels: string[], size: number) {
+    return [new MeshPhongMaterial({
+        specular: 0x172022,
+        color: 0x112233,
+        shininess: 60,
+        flatShading: true,
+    }), ...faceLabels
         .map(function createTexture(label) {
             if (label === undefined) return null;
 
+            const margin = 0.8;
             // No idea what this formula is:
             const textSize = Math.pow(2, Math.floor(Math.log(3 * size * margin) / Math.log(2))) * 2;
             const canvas = createCanvas(label, textSize, margin);
@@ -39,5 +45,5 @@ export function createDieMaterials(faceLabels: string[], size: number, margin: n
             shininess: 60,
             flatShading: true,
             map: texture,
-        }));
+        }))];
 }

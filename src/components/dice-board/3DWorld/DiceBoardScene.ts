@@ -69,7 +69,7 @@ export class DiceBoardScene extends Scene {
 
     private createLighting() {
         this.trackChange();
-        const ambientlight = new AmbientLight(ambient_light_color, 0.8);
+        const ambientlight = new AmbientLight(ambient_light_color, 1.0);
         const spotlight = new SpotLight(spot_light_color, ...Object.values({
             intensity: 0.2,
             distance: 12000,
@@ -96,7 +96,7 @@ export class DiceBoardScene extends Scene {
         spotlight4.position.set(-3000, 3000, 1500);
         
         spotlight.intensity = 1
-        spotlight.penumbra = 0.5
+        spotlight.penumbra = 0.3
         spotlight.decay = 1;
         return [ 
             ambientlight,

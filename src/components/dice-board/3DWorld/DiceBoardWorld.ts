@@ -2,6 +2,7 @@ import { World, NaiveBroadphase, ContactMaterial, Material, Body, Plane, Vec3 } 
 import { DiceBoardScene } from "./DiceBoardScene";
 import { DieMaterial, DieFactory } from "./DieFactory";
 import { Camera } from "./Camera";
+import { diceCode } from "./Helpers/DieConfig";
 
 export const WorldMaterials = {
     floor: new Material('floor'),
@@ -58,7 +59,7 @@ export class DiceBoardWorld extends World {
         this.dice.splice(0);
     }
 
-    playDice(...diceCodes: string[]) {
+    playDice(...diceCodes: diceCode[]) {
         this.clearDice();
         this.dice.push(
             ...diceCodes.map(code => {

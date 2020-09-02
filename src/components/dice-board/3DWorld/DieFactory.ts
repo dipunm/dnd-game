@@ -2,7 +2,7 @@ import { Body, ConvexPolyhedron, Material, Vec3 } from "cannon";
 import { Mesh } from "three";
 import { dieConfig, diceCode } from "./Helpers/DieConfig";
 import { createChamferredGeometry } from "./Helpers/createChamferedGeometry";
-import { createDieMaterials } from "./Helpers/createDieMaterials";
+import { createDieMaterials, createD4Materials } from "./Helpers/createDieMaterials";
 import { calculatePolygonStats, createTextureMaps } from "./Helpers/textureMapping";
 export const DieMaterial = new Material("die");
 
@@ -43,10 +43,12 @@ export const DieFactory = new (class { // Singleton.
         const { offset, rotate, scale, markings } = dieConfig[code].texture;
          
         const geom = createChamferredGeometry(shape, 0.93);
-        const materials = createDieMaterials(
-            markings.sort(() => Math.random() - 0.5),
-            shape.boundingSphereRadius / 2
-        );
+        const materials = code === 'd4' ? 
+            createD4Materials(shape.boundingSphereRadius / 2) : 
+            createDieMaterials(
+                markings.sort(() => Math.random() - 0.5),
+                shape.boundingSphereRadius / 2
+            );
         const { materialIndexes, vertexUvs } = createTextureMaps(
             markings.length, nSides, nTriangles, 
             rotate, scale, offset

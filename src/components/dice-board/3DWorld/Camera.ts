@@ -2,7 +2,7 @@ import { PerspectiveCamera } from "three";
 
 export class Camera extends PerspectiveCamera {
     constructor(aspect: number = 1) {
-        const distance_from_floor = 14000;
+        const distance_from_floor = 12000;
         const field_of_view = 20; // observable area measured in degrees. Smaller angle = less skewing on edges.
         const clip_near = 100; // objects nearer that this will be culled.
         const clip_far = distance_from_floor; // objects farther than this will be culled.

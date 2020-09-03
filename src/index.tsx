@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import { Separator, DialogDisclosure, useDialogState } from 'reakit';
 import { FocusVisibleManager } from 'use-focus-visible';
 import './index.css';
+import { useObservable } from "react-use";
+
 
 import { RequireLogin } from './components/user-auth/LoginPage';
 import { TabbedLayout } from './layouts/TabbedLayout';
@@ -16,6 +18,10 @@ import { Button } from './controls/form-controls/Button';
 import { User } from './components/user-auth/UserObservable';
 import { ChatComponent } from './components/chat-window/ChatComponent';
 import { DiceBoard } from './components/dice-board/DiceBoard';
+import { Toast } from './controls/Toast';
+import TabObservable from './layouts/TabObservable'
+import { UserName } from './components/chat-window/ChatComponents';
+
 
 type PlayerPageProps = {
   user: User,
@@ -24,10 +30,28 @@ type PlayerPageProps = {
 
 function PlayerPage({ user, logout }: PlayerPageProps) {
   const dialog = useDialogState({ modal: true, visible: false });
+  const [visibility, setVisibility] = React.useState(false);
+  const [messageText, setMessageText] = React.useState("");
+  const activeTab = useObservable(TabObservable, null);
+  const [currentNotificationMessage, setCurrentNotificationMessage] = React.useState<Message>({handle: "", message: ""});
+
+  const activateToast = (message: Message) => {
+    setVisibility(true);
+    setCurrentNotificationMessage(message);
+    setTimeout(() => {setVisibility(false);}, 2000);
+  };
+
+  const messageNotification = (message: Message) => {
+    if (activeTab != "Chat")
+    {
+      activateToast(message);
+    }
+  };
 
   return (
-    <TabbedLayout 
+    <TabbedLayout
       tabLabels={[ 'Dice', 'Character Sheet', 'Chat' ]}
+      tabIds={[ 'Dice', 'Character Sheet', 'Chat' ]}
       moreMenuContents={(menuProps) => (
         <>
           <NavLabel>You are logged in as <strong>{user?.username}</strong></NavLabel>
@@ -57,11 +81,16 @@ function PlayerPage({ user, logout }: PlayerPageProps) {
           </TabPanel>
     
           <TabPanel {...tabProps} tabIndex={-1} style={{ overflow: 'auto', flexGrow: 1 }}>
-            <ChatComponent />
+            <ChatComponent messageNotification={messageNotification}  />
           </TabPanel>
+          <Toast visibility={visibility} fromThisUser={false}>
+              <UserName>{currentNotificationMessage.handle}</UserName>
+              <p>{currentNotificationMessage.message}</p>
+          </Toast>
         </>
       )}
     </TabbedLayout>
+    
   );
 }
 

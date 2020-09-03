@@ -30,7 +30,7 @@ export const Tab = styled(tab)`
     /*${focusStyles(css`
         font-weight: bold;
         box-shadow: inset 0px -2px 3px black;
-    `)}*/
+    `)}*/ /* accessibility */
     ${focusStyles(css`
         box-shadow: inset 0 -4px 3px -3px ${colors.outline};
     `)}  

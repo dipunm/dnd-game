@@ -31,6 +31,10 @@ io.on('connection', socket => {
             if (err) return console.error(err); // Should I use this, or console.log(err.message)?
         });
     });
+
+    socket.on('notification', (data: string) => {
+        io.emit('notification', data);
+    })
 });
 
 server.listen(port, () => {

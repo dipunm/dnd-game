@@ -15,7 +15,7 @@ type ChatProps = {
 
 export function ChatComponent({messageNotification} : ChatProps) {
     const messages = useObservable(ChatObservable, []);
-    const shouldReceiveNotification = useObservable(NotificationObservable, false);
+    const currentNotificationMessage = useObservable(NotificationObservable, null);
     const activeTab = useObservable(TabObservable, null);
     const { inputProps, onFormSubmit } = useChatInputBehaviour({
         submitHandler: value => {
@@ -28,7 +28,7 @@ export function ChatComponent({messageNotification} : ChatProps) {
     
     // When you switch to the Chat tab
     useEffect(() => {
-        if (activeTab == 'Chat')
+        if (activeTab === 'Chat')
         {
             oldScrollHeightRef.current = messagePanelRef.current?.scrollHeight ?? 0; // Set the reference scroll height (so it doesn't initially think it's 0)
             messagePanelRef.current?.scrollTo(0, messagePanelRef.current?.scrollHeight); // Scroll to the bottom
@@ -36,14 +36,16 @@ export function ChatComponent({messageNotification} : ChatProps) {
     },[activeTab]);
 
     useEffect(() => {
-        if (shouldReceiveNotification)
-        {
-            messageNotification(messages[messages.length - 1]); // Trigger a notification, and provide the text of the last message that was sent
-        }
-    },[messages.length]);
+            if (currentNotificationMessage != null)
+            {
+                messageNotification(currentNotificationMessage); // Trigger a notification, and provide the last sent message
+
+            }
+    },[currentNotificationMessage, messageNotification]);
 
     useLayoutEffect(() => {
         scrollToBottomUponNewMessage(messagePanelRef.current, oldScrollHeightRef.current);
+        oldScrollHeightRef.current = messagePanelRef.current?.scrollHeight ?? 0; // Have to update this variable outside of the function
     }, [messages.length]); // The dependency list indicates when the hook should be run. It essentially says "if messages.length changes, then run" which is exactly what we need
 
     /**
@@ -59,7 +61,7 @@ export function ChatComponent({messageNotification} : ChatProps) {
             <MessagePanel ref={messagePanelRef}>
                 <Spacer grow={true} />
                 {messages.map(({ handle, message }, i) => (
-                    <ChatMessage key={i} fromThisUser={handle == ChatObservable.username}>
+                    <ChatMessage key={i} fromThisUser={handle === ChatObservable.username}>
                         <UserName>{handle}</UserName>
                         <p>{message}</p>
                     </ChatMessage>

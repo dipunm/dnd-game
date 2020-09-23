@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Separator, DialogDisclosure, useDialogState } from 'reakit';
 import { FocusVisibleManager } from 'use-focus-visible';
@@ -31,22 +31,31 @@ type PlayerPageProps = {
 function PlayerPage({ user, logout }: PlayerPageProps) {
   const dialog = useDialogState({ modal: true, visible: false });
   const [visibility, setVisibility] = React.useState(false);
-  const [messageText, setMessageText] = React.useState("");
   const activeTab = useObservable(TabObservable, null);
   const [currentNotificationMessage, setCurrentNotificationMessage] = React.useState<Message>({handle: "", message: ""});
+  const [unreadNotifications, setUnreadNotifications] = useState(0);
 
   const activateToast = (message: Message) => {
     setVisibility(true);
     setCurrentNotificationMessage(message);
-    setTimeout(() => {setVisibility(false);}, 2000);
+    setTimeout(() => {setVisibility(false);}, 4000);
   };
 
   const messageNotification = (message: Message) => {
-    if (activeTab != "Chat")
+    if (activeTab !== "Chat")
     {
       activateToast(message);
+      setUnreadNotifications(unreadNotifications + 1);
+      console.log(unreadNotifications);
     }
   };
+
+  useEffect(() => {
+      if (activeTab === 'Chat')
+      {
+        setUnreadNotifications(0);
+      }
+  },[activeTab])
 
   return (
     <TabbedLayout
@@ -87,6 +96,7 @@ function PlayerPage({ user, logout }: PlayerPageProps) {
               <UserName>{currentNotificationMessage.handle}</UserName>
               <p>{currentNotificationMessage.message}</p>
           </Toast>
+          <div>{unreadNotifications}</div>
         </>
       )}
     </TabbedLayout>

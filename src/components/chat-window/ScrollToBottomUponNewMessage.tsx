@@ -5,9 +5,9 @@ export const scrollToBottomUponNewMessage = (messagePanel: HTMLDivElement|null, 
     // a ?? b. If a is null, return b
     // const. constant within scope
     const scrollPosition = scrollTop + clientHeight;
-    if (Math.abs(scrollPosition - oldScrollHeight) < 100) 
+    if (Math.abs(scrollPosition - oldScrollHeight) < 150) 
     {
+        
         messagePanel?.scrollTo(0, messagePanel?.scrollHeight);
     }
-    oldScrollHeight = messagePanel?.scrollHeight ?? 0;
 };

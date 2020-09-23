@@ -37,8 +37,8 @@ export const ChatMessage = styled.div<{ fromThisUser: boolean }>`
         white-space: pre-line;
         position: relative;
         font-size: 0.9rem;
-        margin: 0;
-        padding: 5px 0;
+        margin: 1%;
+        /*padding: 5px 0;*/
     }
 `;
 

@@ -3,21 +3,25 @@ import { BehaviourSubject } from '../../libraries/Observable';
 import socket from '../../libraries/socket';
 import UserObservable from '../user-auth/UserObservable';
 
-class NotificationObservable extends BehaviourSubject<boolean> {
+class NotificationObservable extends BehaviourSubject<Message|null> {
     username!: string;
-
-    constructor() 
-    {
-        super(false);
-        socket.on('notification', this.sendNotification);
+    
+    constructor()
+    { 
+        super(null);
+        //socket.on('notification', this.sendNotification);
+        socket.on('chat', this.sendNotification);
         UserObservable.subscribe(user => 
             this.updateUsername(user?.username ?? 'anonymous')
         );
     }
 
     @boundMethod
-    private sendNotification(handle: string) {
-        this.emit(handle !== this.username); // Send the new message array to Chat.tsx + all other "observers" (I assume any other file that uses this as an observable)
+    private sendNotification(latestMessage: Message) {
+        if (latestMessage.handle !== this.username)
+        {
+            this.emit(latestMessage);
+        }
     }
 
     @boundMethod
